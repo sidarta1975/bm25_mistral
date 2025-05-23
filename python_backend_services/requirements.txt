@@ -1,0 +1,28 @@
+##python_backend_services/requirements.txt
+##For the Flask/FastAPI web application
+
+flask
+flask-cors
+##OR if using FastAPI:
+fastapi
+uvicorn[standard]
+##For Elasticsearch client
+
+elasticsearch>=8.0.0,<9.0.0 # Specify a version range
+##For making HTTP requests (e.g., to Ollama, though llm_service might use it)
+
+requests
+##For reading .env files
+
+python-dotenv
+##For testing
+
+pytest
+pytest-cov # Optional, for coverage reports
+##Add other specific libraries you might need:
+##e.g., for NLP tasks if you expand beyond basic text processing
+nltk
+spacy
+sentence-transformers # If doing embedding generation
+##For data ingestion if you use pandas for TSV or other structured data
+pandas
