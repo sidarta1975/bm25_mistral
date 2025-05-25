@@ -90,7 +90,7 @@ def test_search_petitions_bm25_only_success(search_orchestrator_instance,
     results = orchestrator.search_petitions_bm25_only(user_query)
 
     mock_es_service_for_orchestrator.es_client.search.assert_called_once()
-    actual_call_kwargs = mock_es_service_for_stage1_orchestrator.es_client.search.call_args.kwargs
+    actual_call_kwargs = mock_es_service_for_orchestrator.es_client.search.call_args.kwargs
 
     assert actual_call_kwargs['index'] == settings.ELASTICSEARCH_INDEX_NAME
     assert actual_call_kwargs['body']['query']['match']['content'] == user_query

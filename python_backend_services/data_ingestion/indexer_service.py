@@ -5,6 +5,13 @@ from typing import List, Dict, Any, Optional
 import logging
 import time
 
+# Supondo que settings venha de app.core.config
+# Para execução standalone, um fallback será usado no if __name__ == '__main__'
+try:
+    from app.core.config import settings as app_settings  # Renomeado para evitar conflito
+except ImportError:
+    app_settings = None
+
 # Configure basic logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(module)s - %(message)s')
 logger = logging.getLogger(__name__)
@@ -12,24 +19,16 @@ logger = logging.getLogger(__name__)
 
 class ElasticsearchService:
     def __init__(self, es_hosts: List[str], es_user: Optional[str] = None, es_password: Optional[str] = None):
-        """
-        Initializes the Elasticsearch client.
-
-        Args:
-            es_hosts (List[str]): List of Elasticsearch node URLs (e.g., ["http://localhost:9200"]).
-            es_user (Optional[str]): Username for Elasticsearch basic authentication.
-            es_password (Optional[str]): Password for Elasticsearch basic authentication.
-        """
         http_auth = None
         if es_user and es_password:
             http_auth = (es_user, es_password)
-
         try:
             self.es_client = Elasticsearch(
                 hosts=es_hosts,
                 http_auth=http_auth,
                 retry_on_timeout=True,
-                max_retries=3
+                max_retries=3,
+                timeout=30  # Adicionado um timeout maior para operações como bulk
             )
             if not self.es_client.ping():
                 raise ConnectionError("Failed to connect to Elasticsearch cluster.")
@@ -41,78 +40,95 @@ class ElasticsearchService:
             logger.error(f"An unexpected error occurred during Elasticsearch client initialization: {e}")
             raise
 
-    def create_index_if_not_exists(self, index_name: str, index_settings: Optional[Dict[str, Any]] = None) -> None:
+    def create_index_if_not_exists(self, index_name: str, embedding_dimensions: int,
+                                   index_config: Optional[Dict[str, Any]] = None) -> None:
         """
-        Creates an Elasticsearch index if it doesn't already exist.
+        Creates an Elasticsearch index if it doesn't already exist with the new comprehensive mapping.
 
         Args:
             index_name (str): The name of the index to create.
-            index_settings (Optional[Dict[str, Any]]): Custom settings and mappings for the index.
+            embedding_dimensions (int): The number of dimensions for the dense_vector (embedding).
+            index_config (Optional[Dict[str, Any]]): Optional full index configuration. If None, default is used.
         """
         if self.es_client.indices.exists(index=index_name):
             logger.info(f"Index '{index_name}' already exists.")
             return
 
-        if index_settings is None:
-            # Define a default mapping if none is provided
-            # This is a very basic mapping, customize it for your needs (analyzers, field types, etc.)
-            index_settings = {
+        if index_config is None:
+            index_config = {
                 "settings": {
                     "number_of_shards": 1,
-                    "number_of_replicas": 0,  # For local development, 0 replicas is fine
+                    "number_of_replicas": 0,
                     "analysis": {
                         "analyzer": {
-                            "default": {  # Using 'default' to override the standard analyzer
+                            "default": {  # Analyzer padrão para campos não especificados
                                 "type": "custom",
                                 "tokenizer": "standard",
-                                "filter": ["lowercase", "asciifolding"]  # Basic filters
+                                "filter": ["lowercase", "asciifolding"]
                             },
-                            "portuguese_analyzer": {  # Example specific analyzer for Portuguese
+                            "portuguese_analyzer": {
                                 "type": "custom",
                                 "tokenizer": "standard",
                                 "filter": [
                                     "lowercase",
                                     "asciifolding",
-                                    # "portuguese_stop", # Requires stop filter setup
-                                    # "portuguese_stemmer" # Requires stemmer filter setup
+                                    "portuguese_stop_filter",  # Definido abaixo
+                                    "portuguese_stemmer_filter"  # Definido abaixo
                                 ]
                             }
+                        },
+                        "filter": {
+                            "portuguese_stop_filter": {
+                                "type": "stop",
+                                "stopwords": "_portuguese_"  # Usa a lista de stopwords embutida do ES para pt-br
+                            },
+                            "portuguese_stemmer_filter": {
+                                "type": "stemmer",
+                                "language": "portuguese"  # Usa o stemmer embutido do ES para pt-br
+                            }
                         }
-                        # Define filters like 'portuguese_stop', 'portuguese_stemmer' if needed
-                        # "filter": {
-                        #     "portuguese_stop": {
-                        #         "type": "stop",
-                        #         "stopwords": "_portuguese_"
-                        #     },
-                        #     "portuguese_stemmer": {
-                        #         "type": "stemmer",
-                        #         "language": "portuguese"
-                        #     }
-                        # }
                     }
                 },
                 "mappings": {
                     "properties": {
-                        "id": {"type": "keyword"},  # Document ID from filename
+                        # IDs e Caminhos
+                        "document_id": {"type": "keyword"},  # Do TSV, usado como _id
                         "file_name": {"type": "keyword"},
-                        "file_path": {"type": "keyword"},
-                        "content": {
-                            "type": "text",
-                            "analyzer": "portuguese_analyzer"  # Use specific analyzer for content
-                            # "analyzer": "standard" # Or a simpler one
-                        },
-                        "tags": {"type": "keyword"},
-                        # Tags are usually treated as keywords for exact matching/filtering
-                        "glossary_terms_found": {"type": "keyword"},
-                        "area_of_law": {"type": "keyword"},
-                        # Add other fields and their types as needed
-                        # "embedding": {"type": "dense_vector", "dims": 768} # Example for vector embeddings
+                        "content_path_resolved": {"type": "keyword"},  # Caminho completo resolvido pelo parser
+
+                        # Campos de Classificação (principalmente para filtros exatos)
+                        "document_category": {"type": "keyword"},
+                        "document_type": {"type": "keyword"},
+                        "legal_action": {"type": "keyword"},
+                        "legal_domain": {"type": "keyword"},
+                        "sub_areas_of_law": {"type": "keyword"},  # Pode ser uma lista de keywords
+                        "jurisprudence_court": {"type": "keyword"},
+                        "version": {"type": "keyword"},
+
+                        # Campos Textuais para Busca e Display
+                        "document_title": {"type": "text", "analyzer": "portuguese_analyzer",
+                                           "fields": {"keyword": {"type": "keyword", "ignore_above": 256}}},
+                        "summary": {"type": "text", "analyzer": "portuguese_analyzer"},
+                        "first_lines": {"type": "text", "analyzer": "portuguese_analyzer"},
+                        # Ou apenas keyword se não for para busca full-text
+
+                        # Conteúdo Principal
+                        "content": {"type": "text", "analyzer": "portuguese_analyzer"},
+
+                        # Vetor de Embedding (para Fase 3 do MVP)
+                        "content_embedding": {
+                            "type": "dense_vector",
+                            "dims": embedding_dimensions  # Será configurado via settings
+                        }
+                        # Se você tinha outros campos como "tags" ou "glossary_terms_found"
+                        # e eles não vêm do novo TSV, eles foram removidos deste mapeamento.
+                        # Adicione-os de volta se necessário.
                     }
                 }
             }
 
         try:
-            self.es_client.indices.create(index=index_name, body=index_settings)
+            self.es_client.indices.create(index=index_name, body=index_config)
             logger.info(f"Index '{index_name}' created successfully with specified mappings.")
         except es_exceptions.RequestError as e:
             if e.error == 'resource_already_exists_exception':
@@ -125,52 +141,54 @@ class ElasticsearchService:
             raise
 
     def bulk_index_documents(self, index_name: str, documents: List[Dict[str, Any]]) -> tuple[int, list]:
-        """
-        Indexes a list of documents into Elasticsearch using the bulk API.
-        Each document dictionary must have an "id" key to be used as the Elasticsearch document ID.
-
-        Args:
-            index_name (str): The name of the index.
-            documents (List[Dict[str, Any]]): A list of document dictionaries to index.
-
-        Returns:
-            tuple[int, list]: Number of successfully indexed documents, and a list of errors.
-        """
         if not documents:
             logger.info("No documents provided for bulk indexing.")
             return 0, []
 
-        actions = [
-            {
+        actions = []
+        for doc in documents:
+            # O DocumentParser já deve fornecer o campo "id" que é o "document_id" do TSV
+            doc_id = doc.get("id")
+            if not doc_id:
+                logger.warning(
+                    f"Document missing 'id' (expected from 'document_id' in TSV). Skipping: {doc.get('file_name', 'N/A')}")
+                continue
+
+            # Prepara o documento para o Elasticsearch, removendo o 'id' da fonte se ele já é usado como _id
+            source_doc = doc.copy()
+            # Não é estritamente necessário remover 'id' de _source se _id é o mesmo,
+            # mas pode ser mais limpo.
+            # if "id" in source_doc:
+            #    del source_doc["id"]
+
+            actions.append({
                 "_index": index_name,
-                "_id": doc.get("id"),  # Use the "id" field from your document data
-                "_source": doc
-            }
-            for doc in documents if doc.get("id")  # Ensure document has an ID
-        ]
+                "_id": doc_id,
+                "_source": source_doc  # O DocumentParser já adiciona "content" aqui
+            })
 
         if not actions:
-            logger.warning("No documents with valid IDs found for bulk indexing.")
+            logger.warning("No documents with valid IDs found for bulk indexing after filtering.")
             return 0, []
 
         logger.info(f"Attempting to bulk index {len(actions)} documents into '{index_name}'...")
         try:
-            success_count, errors = bulk(self.es_client, actions, raise_on_error=False, raise_on_exception=False)
+            success_count, errors = bulk(self.es_client, actions, raise_on_error=False, raise_on_exception=False,
+                                         request_timeout=60)
             logger.info(f"Bulk indexing complete. Successfully indexed: {success_count} documents.")
             if errors:
                 logger.error(f"Errors occurred during bulk indexing: {len(errors)}")
-                for i, error in enumerate(errors[:5]):  # Log first 5 errors
-                    logger.error(f"Error {i + 1}: {error}")
+                for i, error_detail in enumerate(errors[:5]):
+                    logger.error(f"Error {i + 1}: {error_detail}")
             return success_count, errors
         except es_exceptions.ElasticsearchException as e:
             logger.error(f"Elasticsearch bulk operation failed: {e}")
-            return 0, [str(e)]  # Return the exception as an error
+            return 0, [{"error_type": "ElasticsearchException", "reason": str(e)}]
         except Exception as e:
             logger.error(f"An unexpected error occurred during bulk indexing: {e}")
-            return 0, [str(e)]
+            return 0, [{"error_type": "GenericException", "reason": str(e)}]
 
     def delete_index(self, index_name: str) -> bool:
-        """Deletes an Elasticsearch index."""
         if not self.es_client.indices.exists(index=index_name):
             logger.info(f"Index '{index_name}' does not exist, cannot delete.")
             return False
@@ -182,70 +200,97 @@ class ElasticsearchService:
             logger.error(f"Failed to delete index '{index_name}': {e}")
             return False
 
-    # Add other methods as needed (e.g., search, get_document_by_id, update_document)
-    # These will be used by the `search_orchestrator.py` in the `app/services` module.
-
 
 if __name__ == '__main__':
     # Example Usage (requires Elasticsearch to be running)
-    import sys
-    import os
 
-    # sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..')))
-
-    try:
-        from app.core.config import settings
-
-        ES_HOSTS = settings.ELASTICSEARCH_HOSTS
-        ES_INDEX = settings.ELASTICSEARCH_INDEX_NAME
-        ES_USER = settings.ELASTICSEARCH_USER
-        ES_PASSWORD = settings.ELASTICSEARCH_PASSWORD
-        print(f"Using Elasticsearch settings: Hosts={ES_HOSTS}, Index={ES_INDEX}")
-    except ImportError:
-        print("Could not import settings. Using default Elasticsearch config for testing.")
+    # Configurações para o teste (simulando o que viria de app_settings)
+    if app_settings:
+        ES_HOSTS = app_settings.ELASTICSEARCH_HOSTS
+        ES_INDEX = app_settings.ELASTICSEARCH_INDEX_NAME
+        ES_USER = app_settings.ELASTICSEARCH_USER
+        ES_PASSWORD = app_settings.ELASTICSEARCH_PASSWORD
+        EMBEDDING_DIMS = app_settings.EMBEDDING_DIMENSIONS  # Pega do config
+        logger.info(
+            f"Using Elasticsearch settings from app.core.config: Hosts={ES_HOSTS}, Index={ES_INDEX}, EmbeddingDims={EMBEDDING_DIMS}")
+    else:
+        logger.warning("Could not import app.core.config.settings. Using default Elasticsearch config for testing.")
         ES_HOSTS = ["http://localhost:9200"]
-        ES_INDEX = "test_petitions_index"
+        ES_INDEX = "test_petitions_full_index"
         ES_USER = None
         ES_PASSWORD = None
+        EMBEDDING_DIMS = 4096  # Default para Mistral 7B, ajuste se necessário
 
     try:
         es_service = ElasticsearchService(es_hosts=ES_HOSTS, es_user=ES_USER, es_password=ES_PASSWORD)
 
-        # 1. Optionally delete the index if it exists (for a clean test run)
         print(f"\nAttempting to delete index '{ES_INDEX}' if it exists...")
         es_service.delete_index(ES_INDEX)
-        time.sleep(1)  # Give ES a moment
+        time.sleep(1)
 
-        # 2. Create the index with specific mappings
-        print(f"\nAttempting to create index '{ES_INDEX}'...")
-        es_service.create_index_if_not_exists(ES_INDEX)  # Default mappings will be used if not specified
+        print(f"\nAttempting to create index '{ES_INDEX}' with EMBEDDING_DIMS={EMBEDDING_DIMS}...")
+        es_service.create_index_if_not_exists(ES_INDEX, embedding_dimensions=EMBEDDING_DIMS)
 
-        # 3. Prepare some dummy documents for indexing
-        dummy_documents = [
-            {"id": "doc_001", "file_name": "pet_alimentos.txt",
-             "content": "Petição inicial de ação de alimentos para menor.", "tags": ["alimentos", "família"],
-             "glossary_terms_found": ["alimentos", "pensão alimentícia"], "area_of_law": "Familia"},
-            {"id": "doc_002", "file_name": "contrato_compra_venda.txt",
-             "content": "Contrato de compra e venda de imóvel residencial.", "tags": ["contrato", "imóvel", "civil"],
-             "glossary_terms_found": ["contrato de compra e venda"], "area_of_law": "Civil"},
-            {"id": "doc_003", "file_name": "defesa_usucapiao.txt",
-             "content": "Peça de defesa em processo de usucapião especial urbano.",
-             "tags": ["usucapião", "defesa", "imóvel"], "glossary_terms_found": ["usucapião"], "area_of_law": "Civil"}
+        # Dummy documents com a nova estrutura (sem embeddings por enquanto, só para testar o mapeamento)
+        dummy_documents_new_structure = [
+            {
+                "id": "doc_001_v2",  # Este 'id' será usado como _id no ES
+                "document_id": "doc_001_v2",
+                "file_name": "pet_alimentos_v2.txt",
+                "content_path_resolved": "/path/to/pet_alimentos_v2.txt",
+                "document_title": "Petição Inicial de Alimentos para Menor (v2)",
+                "summary": "Esta é uma petição que visa garantir alimentos para um menor de idade, conforme a lei.",
+                "first_lines": "EXCELENTÍSSIMO SENHOR DOUTOR JUIZ DE DIREITO DA VARA DE FAMÍLIA...",
+                "document_category": "Petição",
+                "document_type": "Petição Inicial",
+                "legal_action": "Ação de Alimentos",
+                "legal_domain": "Direito de Família",
+                "sub_areas_of_law": ["Alimentos", "Direito Infantojuvenil"],  # Lista de keywords
+                "jurisprudence_court": None,
+                "version": "2.1",
+                "content": "Conteúdo completo da petição de alimentos aqui... Lorem ipsum dolor sit amet..."
+                # "content_embedding": [0.1, 0.2, ..., 0.N] # Vetor com EMBEDDING_DIMS elementos (para Fase 3)
+            },
+            {
+                "id": "contrato_001_v2",
+                "document_id": "contrato_001_v2",
+                "file_name": "contrato_loc_v2.docx",  # Exemplo com docx, embora o parser espere txt
+                "content_path_resolved": "/path/to/contrato_loc_v2.docx",
+                "document_title": "Contrato de Locação Residencial Padrão (v2)",
+                "summary": "Modelo de contrato de locação para fins residenciais.",
+                "first_lines": "Pelo presente instrumento particular de contrato de locação...",
+                "document_category": "Contrato",
+                "document_type": "Contrato de Locação",
+                "legal_action": None,  # Nulo para contratos
+                "legal_domain": "Direito Imobiliário",
+                "sub_areas_of_law": ["Locação"],
+                "jurisprudence_court": None,
+                "version": "1.0b",
+                "content": "Cláusulas do contrato de locação... Lorem ipsum dolor sit amet..."
+            }
         ]
-        print(f"\nAttempting to bulk index {len(dummy_documents)} dummy documents...")
-        success_count, errors = es_service.bulk_index_documents(ES_INDEX, dummy_documents)
+        print(f"\nAttempting to bulk index {len(dummy_documents_new_structure)} dummy documents (new structure)...")
+        success_count, errors = es_service.bulk_index_documents(ES_INDEX, dummy_documents_new_structure)
         print(f"Indexing result - Success: {success_count}, Errors: {len(errors)}")
         if errors:
-            print("First error:", errors[0])
+            logger.error(f"First error during bulk indexing: {errors[0]}")
 
-        # Verify by checking index count (optional)
-        if es_service.es_client.indices.exists(index=ES_INDEX):
-            time.sleep(1)  # Allow time for indexing to settle
+        if es_service.es_client.indices.exists(index=ES_INDEX) and success_count > 0:
+            time.sleep(1)
             count_result = es_service.es_client.count(index=ES_INDEX)
             print(f"\nDocument count in index '{ES_INDEX}': {count_result.get('count')}")
+
+            # Tentar buscar um documento para verificar
+            # try:
+            #     doc_check = es_service.es_client.get(index=ES_INDEX, id="doc_001_v2")
+            #     if doc_check.get("found"):
+            #         print("\nSuccessfully retrieved 'doc_001_v2':")
+            #         import json
+            #         print(json.dumps(doc_check['_source'], indent=2, ensure_ascii=False))
+            # except Exception as e_get:
+            #     print(f"Error getting doc_001_v2: {e_get}")
 
     except ConnectionError:
         print("\n❌ Could not connect to Elasticsearch. Please ensure it's running and accessible.")
     except Exception as e:
-        print(f"\n❌ An unexpected error occurred during the example run: {e}")
-
+        print(f"\n❌ An unexpected error occurred during the example run: {e}", exc_info=True)
