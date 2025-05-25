@@ -1,0 +1,2520 @@
+# Nome do Projeto: bm25_mistral
+# Caminho: /home/sidarta/PycharmProjects/bm25_mistral
+
+## Arquitetura do Projeto:
+bm25_mistral/
+  whatsapp_bot_service/
+    package.json
+    message_handler.js
+    Dockerfile
+    config.js
+    baileys_bot.js
+    whatsapp_client.js
+    package-lock.json
+    temp_files/
+    utils/
+      message_splitter.js
+    baileys_auth_info/
+  python_backend_services/
+    Dockerfile
+    requirements.txt
+    __init__.py
+    source_documents/
+      petitions/
+        AÇÃO DECLARATÓRIA DE INEXIGIBILIDADE DE DÉBITO.txt
+        AÇÃO DECLARATÓRIA DE ATO JURÍDICO PERFEITO.txt
+        AÇÃO DECLARATÓRIA DE NULIDADE DE CLÁUSULA CONTRATUAL ABUSIVA.txt
+        area_law_1/
+    tests/
+      conftest.py
+      test_search_api.py
+      test_search_orchestrator.py
+      __init__.py
+      __pycache__/
+        conftest.cpython-311-pytest-8.3.5.pyc
+        test_search_api.cpython-311-pytest-8.3.5.pyc
+        test_search_orchestrator.cpython-311-pytest-8.3.5.pyc
+        test_search_api.cpython-311-pytest-8.3.5.pyc
+        test_search_orchestrator.cpython-311-pytest-8.3.5.pyc
+        test_glossary_service_app.cpython-311-pytest-8.3.5.pyc
+        __init__.cpython-311.pyc
+        test_llm_service.cpython-311-pytest-8.3.5.pyc
+    __pycache__/
+      __init__.cpython-311.pyc
+    data_ingestion/
+      glossary_processor.py
+      indexer_service.py
+      run_ingestion.py
+      embedding_generator.py
+      document_parser.py
+      __init__.py
+      tag_extractor.py
+      __pycache__/
+        tag_extractor.cpython-311.pyc
+        indexer_service.cpython-311.pyc
+        document_parser.cpython-311.pyc
+        run_ingestion.cpython-311.pyc
+        __init__.cpython-311.pyc
+        glossary_processor.cpython-311.pyc
+    shared_data/
+      glossario.tsv
+    app/
+      main.py
+      __init__.py
+      core/
+        config.py
+        __init__.py
+        __pycache__/
+          config.cpython-311.pyc
+          __init__.cpython-311.pyc
+      __pycache__/
+        __init__.cpython-311.pyc
+        main.cpython-311.pyc
+      api/
+        search_api.py
+        __init__.py
+        __pycache__/
+          __init__.cpython-311.pyc
+          search_api.cpython-311.pyc
+      services/
+        llm_service.py
+        glossary_service.py
+        search_orchestrator.py
+        __init__.py
+        __pycache__/
+          __init__.cpython-311.pyc
+          search_orchestrator.cpython-311.pyc
+          glossary_service.cpython-311.pyc
+          llm_service.cpython-311.pyc
+
+## Códigos dos Arquivos:
+
+
+### Arquivo: whatsapp_bot_service/package.json
+```python
+
+```
+
+### Arquivo: whatsapp_bot_service/message_handler.js
+```python
+
+```
+
+### Arquivo: whatsapp_bot_service/Dockerfile
+```python
+
+```
+
+### Arquivo: whatsapp_bot_service/config.js
+```python
+
+```
+
+### Arquivo: whatsapp_bot_service/baileys_bot.js
+```python
+
+```
+
+### Arquivo: whatsapp_bot_service/whatsapp_client.js
+```python
+
+```
+
+### Arquivo: whatsapp_bot_service/package-lock.json
+```python
+
+```
+
+### Arquivo: whatsapp_bot_service/utils/message_splitter.js
+```python
+
+```
+
+### Arquivo: python_backend_services/Dockerfile
+```python
+
+```
+
+### Arquivo: python_backend_services/requirements.txt
+```python
+##python_backend_services/requirements.txt
+##For the Flask/FastAPI web application
+
+flask
+flask-cors
+##OR if using FastAPI:
+fastapi
+uvicorn[standard]
+##For Elasticsearch client
+
+elasticsearch>=8.0.0,<9.0.0 # Specify a version range
+##For making HTTP requests (e.g., to Ollama, though llm_service might use it)
+
+requests
+##For reading .env files
+
+python-dotenv
+##For testing
+
+pytest
+pytest-cov # Optional, for coverage reports
+##Add other specific libraries you might need:
+##e.g., for NLP tasks if you expand beyond basic text processing
+nltk
+spacy
+sentence-transformers # If doing embedding generation
+##For data ingestion if you use pandas for TSV or other structured data
+pandas
+```
+
+### Arquivo: python_backend_services/__init__.py
+```python
+
+```
+
+### Arquivo: python_backend_services/source_documents/petitions/AÇÃO DECLARATÓRIA DE INEXIGIBILIDADE DE DÉBITO.txt
+```python
+[PASTA]: /home/sidarta/Downloads/pets/pet_todas/. Direito Civil/.. Civil diversas
+
+﻿Contesta ação declaratória de inexigibilidade de débito proposta pelo réu, alegando que o contrato entabulado entre as partes se constitui em ato perfeito e que a duplicata protestada tinha lastro na prestação de serviços de consultoria, sendo, portanto exigível.
+
+EXMO. SR. DR. JUIZ  DE DIREITO DA .... ª VARA  CÍVEL  DE......
+
+
+
+
+
+
+
+
+Vem, ........ nos autos de AÇÃO DECLARATÓRIA DE INEXIGIBILIDADE DE DÉBITO Sob nº ...., proposta por ...., à presença de Vossa  Excelência, por seu procurador e advogado ao final assinado, constituído "ut" instrumento anexo às fls. ...., outorgado na conformidade com a representação que alude o Contrato Social também incluso (doc. ....), para, com o respeito devido, apresentar sua
+
+
+CONTESTAÇÃO, 
+
+pedindo "Vênia" para aduzir as seguintes razões: 
+
+1. Não tem razão a autora, contumaz sustadora de pedido de protestos, bastando verificar-se o registro de distribuições de feitos cíveis, eis que o Contrato firmado pela mesma com a contestante é ato perfeito e faz força de lei entre as partes. (doc. ....)
+
+2. Não resta dúvida de que o mesmo autorizava, pela sua cláusula 12ª, parágrafo 3º, a contestante a sacar a duplicata, ora não reconhecida pela autora, desde que prestados os serviços, no todo ou em parte, e ainda que no caso de não prestado no todo, não tenha a contestante dado causa ao inadimplemento de sua obrigação, como não deu, o que se percebe até pela ausência da notificação a que alude a cláusula 14ª do instrumento. 
+
+3. No caso, a cláusula 1ª, que nomeia a primeira parte dos serviços objetos do contrato, foi integralmente cumprida, e para comprovar o fato, junta a contestante o relatório final elaborado e entregue a autora, bem como provas de entrega e recebimento do mesmo, para cujo trabalho exigiu-se demorados e meticulosos estudos e levantamentos, e ainda para a sua elaboração exigiu-se dispêndio de numerário, inclusive com pagamento a terceiros. (Demais documentos anexos). 
+
+4. Ora, a retribuição pelos serviços, como acordo na cláusula 10ª, de R$ .... e o parágrafo 3., da mesma cláusula, não deixam dúvidas de que o pagamento das duas primeiras parcelas ajustadas é devido, tanto que convencionou-se  naquele parágrafo 3º, que seria restituído o valor da 3ª parcela, de R$ ...., no caso de não efetivada a alienação total ou parcial da empresa autora, a menos que ocorresse desistência da autora em realizar a alienação. 
+
+5. O que efetivamente ocorreu é que houve desinteresse da autora, pois, como mostram as correspondências anexas, não só foi concluído o documento correspondente a primeira parte do objeto dos serviços, como foram apresentados compradores, não dando a autora seqüência no negócio a que se propunha e, não tendo cumprido integralmente com a cláusula 5ª,  bem como a 8ª do instrumento, fatos que autorizaria a contestante inclusive a cobrar o total avençado na cláusula 10ª, a mesma somente procurou cobrar o que lhe é devido pelos serviços que realizou efetivamente, sem discutir qualquer prevalência da cláusula 12ª, parágrafo 3º, que mantinha o valor integral de R$ .... como devido, ante o desinteresse da autora em finalizar as negociações.
+
+6. Desta forma, é cristalino o direito da contestante em receber o que lhe é devido de forma clara e consistente, porque: 1º) Prestou os serviços de consultoria e o relatório, como descrito na cláusula 1ª, alem de ter entregue o mesmo, cuja cópia anexa à presente contestação, e para sua execução empregou recursos até com remuneração da "....", 2º) Não deu causa a não continuidade dos serviços, estes impedidos por ação e omissão da própria contratante, ora autora, 3º) A mesma passou a apresentar cadastro negativo com inúmeros impedimentos, fator que contribuiu para o insucesso da segunda parte dos serviços, embora sobre estes nada cobrou a prestamista, ora contestante. 
+
+Assim requer, por tratar-se de matéria exclusivamente de direito, o julgamento antecipado da lide, autorizado pelo art. 330 do CPC e, caso assim não entenda  Vossa Excelência, protesta por provar o alegado com todos os meios de prova em direito admitidos, mormente depoimento pessoal do representante legal da autora, ouvida de testemunhas, juntada de novos documentos e pericial, se necessário, para ao final ser DECLARADA IMPROCEDENTE a ação, com a condenação da requerida no ônus da sucumbência, com o fim de ser desconstituída a liminar concedida na ação de sustação sob nº ...., seguindo o apontamento de protesto seu efeito coercitivo. 
+
+Termos em que
+pede deferimento. 
+
+...., .... de .... de ....
+
+....................
+Advogado OAB/...
+
+```
+
+### Arquivo: python_backend_services/source_documents/petitions/AÇÃO DECLARATÓRIA DE ATO JURÍDICO PERFEITO.txt
+```python
+[PASTA]: /home/sidarta/Downloads/pets/pet_todas/. Direito Civil/.. Civil diversas
+
+﻿AÇÃO DECLARATÓRIA DE ATO JURÍDICO PERFEITO Os requerentes são mutuários do Sistema Financeiro de Habitação, onde é aplicado o reajuste conforme a categoria profissional, que no caso é no 2º mês subsequente à data de alteração do salário mínimo, por se tratar de profissional autônomo. Ocorre que abusivamente as requerentes vêm reajustando os valores das prestações, aplicando a Taxa Referencial. Requer a declaração do ato jurídico perfeito, constante no contrato de compra e venda e que seja interpretada a cláusula contratual.
+
+EXMO. SR. DR. JUIZ DA .... VARA FEDERAL SEÇÃO JUDICIÁRIA DO ESTADO ....
+
+
+
+
+
+
+
+
+
+1. ............................................. (qualificação), profissional liberal, portador do CPF/MF .... residente e domiciliado na Rua .... nº ...., Cidade ...., Estado ....;
+
+2. ............................................. (qualificação), profissional liberal, portadora do CPF/MF .... residente e domiciliada na Rua .... nº ...., Cidade ...., Estado ....;
+
+Por seus procuradores e advogados infra-assinados, inscritos na OAB/.... sob nºs ...., com escritório profissional na Rua .... nº ...., onde recebem intimações em geral, vem respeitosamente perante Vossa Excelência propor,
+
+
+AÇÃO DECLARATÓRIA DE ATO JURÍDICO PERFEITO E INTERPRETAÇÃO DE CLÁUSULA CONTRATUAL
+
+contra .............................................., instituição financeira de prestação de serviços públicos, pessoa jurídica de direito privado, com sede no setor Bancário ...., quadros ...., lote ...., em ...., com filial em ...., na Rua .... nº ....
+
+...., Autarquia Federal, com sede na Capital da República e Delegacia na Cidade de ...., na Rua .... nº ....
+
+Através de instrumento particular de compra e venda com "pacto adjeto" de hipoteca e outras avenas com força de escritura pública, os Requerentes tornam-se mutuários, proprietários e devedores dos Requeridos, tendo como cláusulas de reajustes de prestações o Plano de Equivalência salarial (PES).
+
+Ressaltam os Requerentes que suas prestações somente podem sofrer reajustes, de forma que esses índices de aumento obedeçam a mesma proporcionalidade de porcentagem que os mesmos tiveram em suas categorias profissionais. Nos casos de profissionais liberais, classificados como autônomos, no segundo mês subsequente à data da alteração do salário mínimo.
+
+O Decreto Lei nº 2163 e 2240 de 19.09.84 e 31.01.85, bem como as RP(s) 4/85 e 41/85 do PTS/CP, determinam que as prestações dos mutuários, junto ao Agente Financeiro, seja reajustada de acordo com a Convenção Coletiva de Trabalho, ou de sentença normativa, ou dessídios coletivos, o que vale dizer que os Requerentes só podem ter suas prestações majoradas quando ocorrem aumentos em suas categorias profissionais, devendo estas prestações serem cobradas com os mesmos índices após o primeiro ou segundo mês subsequente ao do reajuste.
+
+Entretanto, nos vários contratos ora "in examini", os Requeridos, desrespeitando os acordos de vontade, vêm unilateralmente impondo reajustes abusivos nas prestações dos Requerentes, com índices de aumentos de mutuário para mutuário, numa progressiva variação.
+
+Em 04/09/92, o SUPREMO TRIBUNAL FEDERAL declarou a inconstitucionalidade dos artigos 20, 21, 23 e 24 e dos parágrafos 1º e 4º do artigo 18 da lei número 8127/91, que já se encontrava suspensa por força de liminar concedida, proibindo os Agentes Financeiros utilizar os índices da Taxa Referencial de Juros (TR) para reajustar o saldo devedor e as prestações dos imóveis financiados pelo Sistema Financeiro de Habitação, ficando, dessa forma, os autônomos, sem índice de reajuste de suas prestações até que o Conselho Monetário Nacional edite para o caso, ou que o Poder Legislativos se manifeste a respeito. (Diário da Justiça em anexo).
+
+Todavia, os Agentes Financeiros continuam a aplicar a Taxa Referencial às prestações e ao saldo devedor dos mutuários, atingindo um patamar muito elevado, inviabilizando o pagamento das prestações. Inclusive, a Requerida ...., editou normas internas comunicando a inexistência de índice de correção para autônomos, conforme se comprova através da circular em anexo.
+
+De profissionais liberais, autônomos e assegurados continuam sendo prejudicados, haja vista, que as decisões envolvidos pelo Poder Judiciário, não foram aceitas pelos Agentes Financeiros que persistem na aplicação da TR.
+
+Dessa forma, este comportamento veio a ferir os princípios do "pacto sunt servanda", do direito adquirido, do ato jurídico perfeito e do Plano de Equivalência Salarial, por categoria profissional PES/CP, quebrando o equilíbrio contratual, eis que os Requerentes não tiveram reajustes salariais a estes níveis, logo, os aumentos nas prestações dos mutuários foram efetuados de forma arbitrária, abusiva e inconstitucional.
+
+E deve ressaltar, Excelência, que em relação a renda pactuada, encontramos disparidades gritantes.
+
+Em descumprimento ao contrato firmado o Agente Financeiro não admite a perda da renda familiar, situação muito comum no Brasil diante da instabilidade econômica do país.
+
+Os contratos firmados junto aos Agentes Financeiros prevêem a renegociação da dívida, visando restabelecer a capacidade de pagamento da prestação em relação à nova renda familiar apurada.
+
+Os inúmeros casos de diminuição de renda decorrentes da crise econômica que assola a nação, não tem sensibilizado os Agentes Financeiros que continuam a reajustar os valores das prestações, ultrapassando o percentual comprometido.
+
+O aumento excessivo do percentual obriga o mutuário a deixar de pagar as prestações, caso contrário, seu poder aquisitivo seria consideravelmente reduzido, sendo forçado a deixar de suprir outras necessidades básicas de seus familiares.
+
+Com a não observância dos índices de renda familiar pactuada, o número de inadimplentes tende a crescer assustadoramente.
+
+Assim, outra alternativa não resta aos Requerentes senão as presentes vias para fazer prevalecer o ATO JURÍDICO PERFEITO e o DIREITO ADQUIRIDO, bem como, a INTERPRETAÇÃO MENSAL DOS REQUERENTES.
+
+E assim procedendo, ocasionaram um grande desequilíbrio entre a renda e a prestação, o que inviabiliza o cumprimento do contrato, levando, dessa forma, os mutuários a inadimplência e a perda do imóvel, além dos valores até agora pagos, causando-lhes um verdadeiro prejuízo irreparável.
+
+Graves lesões serão causadas ao direito  dos Requerentes, se persistir por parte dos Requeridos a má interpretação das cláusulas contratuais que dizem respeito ao reajuste das prestações.
+
+E quando trata dos princípios da atividade econômica, a Constituição Federal determina que o Sistema de relações seja democrático, de modo a todo existência digna e conforme os ditames da justiça, reconhecida a função social da propriedade e também a defesa do consumidor reafirmando o objetivo de promover a redução das desigualdades sociais; é o que  se vê do artigo 170 "caput" e incisos III, IV e VIII.
+
+Ao firmarem tal contrato, levados pela propaganda das Construtoras e a propaganda oficial, os Requerentes supunham que seria possível o cumprimento de tal avença, sobretudo quando foi estabelecido que os reajustes seria pelo PES, quando na realidade vem sendo aplicada a Taxa Referencial ou índices desconhecidos e superiores aos recebimentos pela Categoria Profissional, quando os Requerentes não têm qualquer aumento mensal e muito menos pelo índice de poupança.
+
+O sistema adotado pelas Requeridas prejudica o próprio interesse público, na medida em que dificulta a aquisição da casa própria. Portanto a imposição por parte das Requeridas para mudar o sistema de reajuste do PES, não passa de ATO NULO DE PLENO DIREITO, eis que praticado em divergência ao espírito da Constituição e em divergência e em infringência a diversas normas legais em vigor, nenhum efeito é produzido.
+
+Vê-se, que os Requerentes foram colocados num sistema totalmente prejudicial aos seus interesses, e o fizeram sob coação e medo de perderem tudo o que já havia sido pago a título de sinal ou poupança na fase da construção. Economias resultantes de longos anos de trabalho que não poderiam ser perdidas em tão pouco tempo.
+
+Vale dizer que as Requeridas podem realizar contratos de financiamento no âmbito do Sistema Financeiro da Habitação, no entanto, deverão fazê-lo em estrita obediência aos ditantes da ordem institucional, no sentido de facilitar a aquisição da casa própria e não em dificultá-la. Daí a aplicação de índices diferentes dos recebidos, bem como da Taxa Referencial.
+
+O Código Civil Brasileiro em seu artigo 145 estabelece:
+
+"É anulável o ato jurídico:
+
+II -Por vício resultante de erro, dolo, coação, simulação e fraude."
+
+Sendo que a coação para viciar a manifestação da vontade há de ser tal, que incuba no potente fundado temos de dano a sua pessoa, a sua família ou a seus bens, iminente e qual, pelo menos ao receável do ato extorquido, completa o artigo 98 do mesmo diploma legal.
+
+Ora, a intenção dos Requerentes foi de assinar contratos limpos, honestos, exeqüíveis, compatíveis com os seus ganhos salariais, de modo que pudessem mensalmente honrar seus compromissos. Suas declarações de vontade, sob o aspecto formal dos instrumentos anexados, não representam a vontade real, ocorrendo na espécie erro substancial quanto ao seu objeto, pois não é razoável que pretendessem ingressar numa relação jurídica econômica que lhes levasse ao desespero e a frustração ou até mesmo à ruína. Não é razoável que de modo próprio tenha querido renunciar um plano em que tinha condições de pagar, que lhe levaria a conquista da casa própria, por outro que lhe levaria a frustração e a ruína econômica e social.
+
+Em tudo isso há um interesse público notório e perceptível, porque atrás do agente financeiro, encontrou-se o ESTADO como interventor no domínio econômico, utilizando a renda privada captada compulsoriamente dos trabalhadores e do povo em geral, e fazendo a aplicação desses recursos segundo a regra política habitacional, mas adentra aos interesses maiores colocados na CARTA MAGNA.
+
+O cumprimento do dever jurídico do mutuário de pagar regularmente suas prestações até completar o ciclo de pagamentos, até completar a devolução da coisa, depende necessariamente da manutenção da capacidade de comprometimento de sua renda familiar. As Requeridas sabem disso porque atuam através de planejamento científico, por técnicas especializadas, ao contrário dos mutuários que são imprevidentes e confiam demais nos órgãos do ESTADO dentro daquela presunção jurídica de idoneidade do poder público. Essa imprevidência aliás, é mais uma das razões finalísticas do Plano de Equivalência Salarial como os indivíduos. A ânsia de possuir uma casa própria pode levar o cidadão a, impensadamente, comprometer mais do que tecnicamente pode ou é possível sua renda mensal, assim como assinar contratos que nem sempre conhece os seus resultados.
+
+Face ao exposto, requerem a Vossa Excelência:
+
+a) Declarar por sentença a validade do ATO JURÍDICO PERFEITO, consistente nos instrumentos particulares de venda e compra com "pacto adjeto" de hipoteca, obedecia os ditames dos artigos 821, 129, 130, 133 e 134, incisos do Código Civil Brasileiro.
+
+b) que as Requeridas se abstenham de aplicar os índices da TAXA REFERENCIAL, em decorrência de sua inconstitucionalidade, até que seja obtido um índice oficial para o reajuste das prestações.
+
+c) Que as Requeridas aguardem a criação de um índice de reajuste das prestações para os mutuários da categoria profissional liberal, compatível com os seus ganhos e com a situação econômica do país, excluindo definitivamente a aplicação de Taxa Referencial.
+
+d) Sejam considerados válidos os pagamentos das prestações efetuadas no período da concessão da limiar, isentando os Requerentes de qualquer acréscimo ou correção monetária posterior.
+
+e) Determine a devolução por parte das Requeridas, das quantias pagas a maior, devidamente, corrigidas na forma da lei, conforme apurado no demonstrativo das prestações em anexo.
+
+f) Determine a citação das Requeridas nos endereços acima citados, na pessoa de seus representantes legais, querendo contestar aos termos da presente, sob pena de confissão e revelia.
+
+g) Seja a presente distribuída por dependência, bem como apensada aos autos números ...., de Medida Cautelar Inominada, em trâmite na ....ª VARA FEDERAL DA SEÇÃO JUDICIÁRIA DE ....
+
+Requerem ainda a Vossa Excelência que julgue procedente a presente Ação, declarando válido e perfeito o ato jurídico, a existência da certeza jurídica a propósito da relação juridicamente estabelecida a interpretação da cláusula contratual, condenando as requeridas no pagamento das custas processuais, na devolução das quantias pagas a maior, devidamente corrigidos na forma da lei, honorários advocatícios e caso as Requeridas não contestam o pedido, seja presente julgada procedente na forma dos artigos 285, 319 e 310 e incisos do Código de Processo Civil.
+
+Protestam provar o alegado por todos os meios de provas em direito admitido, especialmente, pelo depoimento pessoal da Reclamada, sob pena de confissão e revelia, pelos documentos ora juntados, dos documentos constantes à peça exordial da Medida Cautelar acima citada, bem como, pela juntada de novos documentos.
+
+Dá-se o valor da causa: R$ .... (....).
+
+Nestes termos, pedem deferimento.
+
+...., .... de .... de ....
+
+..................
+Advogado OAB/...
+
+```
+
+### Arquivo: python_backend_services/source_documents/petitions/AÇÃO DECLARATÓRIA DE NULIDADE DE CLÁUSULA CONTRATUAL ABUSIVA.txt
+```python
+[PASTA]: /home/sidarta/Downloads/pets/pet_todas/. Direito Civil/.. Petições
+
+﻿AÇÃO DECLARATÓRIA DE NULIDADE DE CLÁUSULA CONTRATUAL ABUSIVA (Art. 53 do CDC) 
+MERITÍSSIMO JUIZ DE DIREITO DA ____ª VARA CÍVEL DA COMARCA DE (XXX) 
+Autos Nº: 
+
+
+
+
+
+
+
+
+NOME DO REQUERENTE (ou Autor, Demandante, Suplicante), (Nacionalidade), (Profissão), (Estado Civil), portador da Carteira de Identidade nº (xxx), inscrito no CPF sob o nº (xxx), residente e domiciliado à Rua (xxx), nº (xxx), Bairro (xxx), Cidade (xxx), Cep. (xxx), no Estado de (xxx), por seu procurador infra-assinado, mandato anexo (doc.1), vem à presença de V. Exa., propor 
+
+
+AÇÃO DECLARATÓRIA DE NULIDADE DE CLÁUSULA
+
+
+
+nos termos do art. 53, do Código de Defesa do Consumidor, em face da NOME DA REQUERIDA (ou Ré, Demandada, Suplicada), inscrita no CNPJ sob o nº (xxx), situada à Rua (xxx), nº (xxx), Bairro (xxx), Cidade (xxx), Cep. (xxx), no Estado de (xxx), pelos motivos que passa a expor:
+
+
+1. Prefacialmente cumpre ressaltar que a nulidade se encontra diante do contrato de compra e venda firmado entre o Requerente e a Requerida, que, em linhas gerais, verifica-se danoso à economia do contratante, mais fraco e vulnerável. (docs. 01/03)
+
+
+2 A mencionada cláusula, pela imprecisa redação em que foi lançada e por sua situação no verso do contrato, é nula de pleno direito, conforme demonstram os fatos abaixo expostos:
+
+Dois dias depois de assinar o contrato no escritório da empresa, ao entardecer, o Requerente, homem de poucas luzes e de escassa experiência, por um amigo foi advertido, ao analisar o contrato, dos prejuízos que lhe adviriam em caso de inadimplemento, isto é, a perda total das prestações pagas.
+
+
+3 O Código do Consumidor dispõe, no art. 53:
+
+"Art. 53. Nos contratos de compra e venda de móveis ou imóveis mediante pagamento em prestação, bem como nas alienações fiduciárias em garantia, consideram-se nulas de pleno direito as cláusulas que estabeleçam a perda total das prestações pagas em benefício do credor que, em razão do inadimplemento, pleitear a resolução do contrato e a retomada do produto alienado."
+
+
+4. Deste modo, a cláusula guerreada infringe essa regra e, como tal, não deve substituir, dada a grave ameaça de dano que o encerra. Ademais, os contratos que regulam as relações de consumo não obrigam os consumidores se lhes não for dada oportunidade de tomar conhecimento prévio de seu conteúdo, ou se os instrumentos forem redigidos de modo a dificultar a compreensão de seu sentido e alcance (Código do Consumidor art.46).
+
+
+5. Com efeito, o Des. Salvador Pompeu de Barros Filho, em inúmeros acórdão proferidos sobre a aplicação do Código do Consumidor , já teve ensejo de afirmar:
+
+É que me parece, e isso já tive ocasião de afirmar em outros julgamentos, que o princípio "pacta sunt servanda", perdeu em muito a sua força, desde quando o Estado passou a intervir nos contratos de direito privado, em defesa do consumidor.
+
+O direito moderno, todavia, preocupado com o social, como o fim de toda regra de direito, sentiu a necessidade de se intrometer, nas relações de direito privado, porque notou que aquele princípio que adotava, à manifestação da vontade com força de lei, estava sendo utilizado pelos mais poderosos em detrimento dos mais frágeis.
+Assim, o acordo de vontades jogado no papel, já não era a confluência de vontades, mas a imposição da vontade de um sobre o outro, que, em condição de inferioridade, já não tinha possibilidade de se opor, sendo forçado a aceitar cláusulas ruinosas, sob pena de sofrer sanções, próprias da vida moderna, tais como inscrição em cadastros de inadimplência, dificultando as relações negociais.
+
+Os estabelecimentos de crédito e os próprios comerciantes, começaram a exibir aos consumidores, contratos padrões, nos quais se inviabiliza, para o consumidor, a discussão de suas cláusulas. É a conhecida imposição " pegar ou largar ".
+Examinando a modificação sensível que se fazia necessária , em nosso ordenamento jurídico, em relação ao contratos, ilustre Professora JUDITH MARTINS COSTA, da Universidade Federal do Rio Grande do Sul, teceu as seguintes considerações:
+
+"Afastada há muito tempo da ciência jurídica a falácia da "intenção" ou "vontade" do legislador, como critério para a compreensão do direito ( isto é a sua interpretação e aplicação ) a dogmática mais atual - para a qual são relevantes os aportes interdisciplinares - buscou descobrir objetivamente, no interior do próprio sistema considerado como uma ordem de princípios os caminhos adequados à flexibilização entre a regra jurídica e a realidade, a única via hábil ao enfrentamento e a regulação das relações jurídicas de uma sociedade marcada pelas antinomias mais profundas, pela complexidade de suas relações.
+Por estas razões, diante da ausência, no Código Civil, de regras específicas aos contratos de adesão, já vinham, no entanto os tribunais decidindo para além da "letra" do artigo 81, alertas, por certo, ao fato de que, entre as complexidades sociais apontadas, a mais marcante, talvez tenha a sua origem em um fenômeno típico deste século, a massificação social, aí inseridos, no âmbito próprio as relações de consumo, a "estandardização" dos comportamentos, a desigualdade de forças ínsita aos sujeitos da relação contratual dota de adesão e os componentes culturais do chamado consumismo" (Direito do Consumidor, vol. 3 pag. 135)
+
+Atento a esta realidade o nosso legislador veio em socorro dos hiposuficientes, intervindo nas relações contratuais, para evitar o enriquecimento ilícito, a preponderância da vontade do mais forte. A lei 8078/90 que instituiu o Código do Consumidor, invade, por assim dizer dos os pactos de vontade que se realizem, tendo de um lado o comerciante ou um prestador de serviços e de outro o consumidor.
+
+A luz desses ensinamentos, entendemos como própria e oportuna, a intervenção do Poder Judiciário, no estudo dos contratos de consumo.
+
+NELSON NERY JUNIOR - DIREITO DO CONSUMIDOR - VOL. 3 PAG 49, faz a seguinte consideração:
+
+"É importante que o Poder Judiciário acompanhe a evolução da sociedade e se insira no contexto do novo direito: o Direito das Relações de Consumo. O juiz deve adaptar-se à modernidade, relativamente aos temas ligados aos interesses difusos e coletivos, como, por exemplo, os do meio ambiente e do consumidor. Estes novos direitos não podem ser interpretados de acordo com os institutos ortodoxos do direito, criados para a solução de direitos individuais, que não mais atendem aos reclamos da sociedade. Os princípios individualísticos do século passado devem ser esquecidos, quando se trata de solucionar conflitos de meio ambiente e de consumo".
+
+As normas do CDC são de ordem pública e interesse social (art. 1º). Isto quer dizer, do ponto de vista prático, que o juiz deve apreciar ex offício qualquer questão relativa as relações de consumo, já que não incide nesta matéria o princípio dispositivo. Sobre elas não se opera a preclusão e as questões que dela surgem podem ser decididas e revistas a qualquer tempo e grau de jurisdição. O tribunal pode, inclusive, decidir contra o único recorrente, reformando a decisão recorrida para pior, ocorrendo, assim, o que denominamos reformatio in pejus permitida, já que se trata de matéria de ordem pública a cujo respeito a lei não exige a iniciativa da parte, mas ao contrário, determina que o juiz a examine de ofício. (pag. 51/ 52)"
+.......
+A harmonia nas relações de consumo e sua realização sempre com base na equidade e boa fé (art. 4º, III) são princípios basilares instituídos pelo Código. Tanto assim que o Código trata como nulas as cláusulas contratuais que infringirem, direta ou indiretamente, a equidade e boa fé (art. 51). 
+
+
+Pelo exposto, REQUER:
+
+
+A citação da Requerida para, querendo, apresente defesa nos termos da lei.
+
+
+Provar o alegado por todos os meios de prova admitidos em direito.
+
+
+Seja julgada procedente o pedido, qal seja, a declaração de nulidade da cláusula abusiva constante do contrato de adesão firmado.
+
+
+Dá-se a causa o valor de R$ (xxx) (valor expresso).
+
+
+Termos que
+
+Pede deferimento.
+
+(Local, data e ano).
+
+(Nome e assinatura do advogado).
+
+```
+
+### Arquivo: python_backend_services/tests/conftest.py
+```python
+# python_backend_services/tests/conftest.py
+# THIS FILE MUST BE NAMED 'conftest.py'
+import pytest
+from unittest.mock import MagicMock, patch
+
+# Import the create_app function from your Stage 1 main application file
+try:
+    from python_backend_services.app.main import create_app
+    from python_backend_services.app.core.config import settings
+    # Import SearchOrchestrator to be patched during app creation for API tests
+    from python_backend_services.app.services.search_orchestrator import SearchOrchestrator
+except ImportError as e:
+    print(
+        f"CONFT_ERROR: Failed to import app components for testing: {e}. Check PYTHONPATH and __init__.py files.")
+
+
+    # Fallback definitions
+    def create_app():
+        print("CONFT_WARNING: Using dummy create_app due to import error.")
+        mock_app = MagicMock(name="DummyFlaskTestApp")
+        mock_app.extensions = {}
+        mock_app.test_client = MagicMock(return_value=MagicMock(name="DummyTestClient"))
+        mock_app.config = {}
+
+        def update_config(cfg_dict): mock_app.config.update(cfg_dict)
+
+        mock_app.config.update = update_config  # type: ignore
+        return mock_app
+
+
+    class DummySettingsConftest:
+        LOG_LEVEL = "DEBUG";
+        ELASTICSEARCH_INDEX_NAME = "test_dummy_index_conftest";
+        ELASTICSEARCH_HOSTS = ["http://dummy-es-conftest"];
+        ELASTICSEARCH_USER = None;
+        ELASTICSEARCH_PASSWORD = None;
+        BM25_TOP_N_RESULTS = 5
+
+
+    settings = DummySettingsConftest()
+
+
+    class SearchOrchestrator:
+        def __init__(self):
+            self.es_service = MagicMock()
+            self.es_service.es_client = MagicMock()
+            self.es_service.es_client.ping.return_value = True
+
+
+@pytest.fixture(scope='session')
+def app():
+    """
+    Creates the Flask app for tests.
+    Patches SearchOrchestrator globally for the app context before app creation
+    to prevent real ES connection attempts during app initialization for API tests.
+    """
+    # The 'name' parameter sets the _mock_name internal attribute and is used in repr()
+    mock_orchestrator_for_app_init = MagicMock(spec=SearchOrchestrator, name="AppInitMockOrchestrator")
+    mock_orchestrator_for_app_init.es_service = MagicMock(name="AppInitMockESService")
+    mock_orchestrator_for_app_init.es_service.es_client = MagicMock(name="AppInitMockESClient")
+    mock_orchestrator_for_app_init.es_service.es_client.ping.return_value = True
+
+    with patch('python_backend_services.app.main.SearchOrchestrator',
+               return_value=mock_orchestrator_for_app_init):
+        flask_app = create_app()
+
+    flask_app.config.update({"TESTING": True})
+    yield flask_app
+
+
+@pytest.fixture()
+def client(app):
+    """A test client for the Stage 1 app. Depends on app_stage1."""
+    return app.test_client()
+
+
+@pytest.fixture
+def mock_app_settings(monkeypatch):
+    """Mocks application settings for tests (mostly for service-level unit tests)."""
+    monkeypatch.setattr(settings, 'ELASTICSEARCH_HOSTS', ['http://mock-elasticsearch:9200'], raising=False)
+    monkeypatch.setattr(settings, 'ELASTICSEARCH_INDEX_NAME', 'mock_test_index_mvp', raising=False)
+    monkeypatch.setattr(settings, 'GLOSSARY_FILE_PATH', 'mock_glossary_stage1.tsv', raising=False)
+    monkeypatch.setattr(settings, 'BM25_TOP_N_RESULTS', 3, raising=False)
+    return settings
+
+
+```
+
+### Arquivo: python_backend_services/tests/test_search_api.py
+```python
+# python_backend_services/tests/test_search.py
+import pytest
+from unittest.mock import patch, MagicMock
+from flask import current_app
+
+MOCK_BM25_SEARCH_RESULTS = [
+    {"document_id": "doc1_id", "file_name": "file1.txt", "content_preview": "Content of file 1...", "score": 1.8},
+    {"document_id": "doc2_id", "file_name": "file2.txt", "content_preview": "Content of file 2...", "score": 1.5}
+]
+
+MOCK_DOCUMENT_DETAIL = {
+    "id": "doc_abc",
+    "file_name": "abc.txt",
+    "content": "Full content of document abc."
+}
+
+
+def get_mock_orchestrator_from_current_app(app_instance) -> MagicMock:
+    """Helper to get the mocked orchestrator from the app context."""
+    orchestrator = app_instance.extensions.get('search_orchestrator')
+    assert orchestrator is not None, "Mocked SearchOrchestrator not found in app.extensions. Check conftest.py and app_stage1 fixture."
+    assert isinstance(orchestrator, MagicMock), "Orchestrator in app.extensions is not a MagicMock."
+    # Corrected: Check the mock's internal _mock_name, which is set by the 'name' parameter in MagicMock constructor
+    assert orchestrator._mock_name == "AppInitMockOrchestrator", \
+        "Orchestrator in app.extensions does not have the expected _mock_name 'AppInitMockOrchestrator'."
+    return orchestrator
+
+
+def test_health_check_healthy(client, app):
+    mock_orchestrator = get_mock_orchestrator_from_current_app(app)
+
+    response = client.get('/health')
+    assert response.status_code == 200
+    json_data = response.get_json()
+    assert json_data['status'] == 'healthy'
+    assert json_data.get('elasticsearch_connection') == 'ok'
+
+
+def test_health_check_es_down(client, app):
+    mock_orchestrator = get_mock_orchestrator_from_current_app(app)
+    mock_orchestrator.es_service.es_client.ping.return_value = False
+
+    response = client.get('/health')
+    assert response.status_code == 503
+    json_data = response.get_json()
+    assert json_data['status'] == 'unhealthy'
+    assert json_data.get('elasticsearch_connection') == 'error_ping_failed'
+
+
+def test_search_endpoint_success(client, app):
+    mock_orchestrator = get_mock_orchestrator_from_current_app(app)
+    mock_orchestrator.search_petitions_bm25_only.reset_mock()
+    mock_orchestrator.search_petitions_bm25_only.return_value = MOCK_BM25_SEARCH_RESULTS
+
+    response = client.post('/api/v1/search', json={'query': 'test search query'})
+
+    assert response.status_code == 200
+    json_data = response.get_json()
+    assert isinstance(json_data, list)
+    assert len(json_data) == len(MOCK_BM25_SEARCH_RESULTS)
+    mock_orchestrator.search_petitions_bm25_only.assert_called_once_with('test search query')
+
+
+def test_search_endpoint_no_results(client, app):
+    mock_orchestrator = get_mock_orchestrator_from_current_app(app)
+    mock_orchestrator.search_petitions_bm25_only.reset_mock()
+    mock_orchestrator.search_petitions_bm25_only.return_value = []
+
+    response = client.post('/api/v1/search', json={'query': 'query for no results'})
+
+    assert response.status_code == 404
+    json_data = response.get_json()
+    assert json_data['message'] == "No documents found matching your query"
+    mock_orchestrator.search_petitions_bm25_only.assert_called_once_with('query for no results')
+
+
+def test_search_endpoint_missing_query(client, app):
+    mock_orchestrator = get_mock_orchestrator_from_current_app(app)
+    mock_orchestrator.search_petitions_bm25_only.reset_mock()
+
+    response = client.post('/api/v1/search', json={})
+
+    assert response.status_code == 400
+    json_data = response.get_json()
+    assert json_data['error'] == "Missing 'query' in request body"
+    mock_orchestrator.search_petitions_bm25_only.assert_not_called()
+
+
+def test_get_document_endpoint_success(client, app):
+    mock_orchestrator = get_mock_orchestrator_from_current_app(app)
+    mock_orchestrator.get_document_details_by_id.reset_mock()
+    doc_id_to_get = MOCK_DOCUMENT_DETAIL['id']
+    mock_orchestrator.get_document_details_by_id.return_value = MOCK_DOCUMENT_DETAIL
+
+    response = client.get(f'/api/v1/document/{doc_id_to_get}')
+
+    assert response.status_code == 200
+    json_data = response.get_json()
+    assert json_data['id'] == doc_id_to_get
+    mock_orchestrator.get_document_details_by_id.assert_called_once_with(doc_id_to_get)
+
+
+def test_get_document_endpoint_not_found(client, app):
+    mock_orchestrator = get_mock_orchestrator_from_current_app(app)
+    mock_orchestrator.get_document_details_by_id.reset_mock()
+    doc_id_not_found = "non_existent_document_id"
+    mock_orchestrator.get_document_details_by_id.return_value = None
+
+    response = client.get(f'/api/v1/document/{doc_id_not_found}')
+
+    assert response.status_code == 404
+    json_data = response.get_json()
+    assert json_data['error'] == f"Document with ID '{doc_id_not_found}' not found"
+    mock_orchestrator.get_document_details_by_id.assert_called_once_with(doc_id_not_found)
+
+
+def test_search_api_orchestrator_es_truly_unavailable(client, app):
+    mock_orchestrator = get_mock_orchestrator_from_current_app(app)
+    mock_orchestrator.search_petitions_bm25_only.reset_mock()
+    mock_orchestrator.es_service = None
+
+    response = client.post('/api/v1/search', json={'query': 'test query'})
+
+    assert response.status_code == 503
+    json_data = response.get_json()
+    assert "Search service temporarily unavailable" in json_data['error']
+    mock_orchestrator.search_petitions_bm25_only.assert_not_called()
+
+```
+
+### Arquivo: python_backend_services/tests/test_search_orchestrator.py
+```python
+# python_backend_services/tests/test_search_orchestrator.py
+# This file should be correct from v9 of the Canvas (where its 6 tests were passing)
+import pytest
+from unittest.mock import patch, MagicMock
+from typing import List, Dict, Any, Optional
+
+try:
+    from python_backend_services.app.services.search_orchestrator import SearchOrchestrator
+    from python_backend_services.data_ingestion.indexer_service import ElasticsearchService
+    from python_backend_services.app.core.config import settings
+except ImportError as e:
+    print(f"ORCH_TEST_ERROR: Failed to import modules for test_search_orchestrator: {e}")
+
+
+    class ElasticsearchService:
+        pass
+
+
+    class SearchOrchestrator:  # type: ignore
+        def __init__(self): self.es_service = None; self.index_name = "dummy"; self.logger = MagicMock()
+
+        def search_petitions_bm25_only(self, q, top_n=3): return []
+
+        def get_document_details_by_id(self, id_): return None
+
+
+    class DummySettingsOrchTest:
+        ELASTICSEARCH_INDEX_NAME = "dummy_index_orch_test";
+        BM25_TOP_N_RESULTS = 3;
+        ELASTICSEARCH_HOSTS = ["http://dummy-es-orch-test"];
+        ELASTICSEARCH_USER = None;
+        ELASTICSEARCH_PASSWORD = None; LOG_LEVEL="DEBUG";
+        LOG_LEVEL = "DEBUG"
+
+
+    settings = DummySettingsOrchTest()
+    SearchOrchestrator.logger = MagicMock()  # type: ignore
+
+
+@pytest.fixture
+def mock_es_service_for_orchestrator():
+    mock_es = MagicMock(spec=ElasticsearchService)
+    mock_es.es_client = MagicMock()
+
+    mock_es.es_client.search.return_value = {
+        'hits': {
+            'hits': [
+                {'_id': 'doc1_es_id', '_score': 1.5, '_source': {'id': 'doc1_source_id', 'file_name': 'doc1.txt',
+                                                                 'content': 'Content of document 1 about apples.'}},
+                {'_id': 'doc2_es_id', '_score': 1.2, '_source': {'id': 'doc2_source_id', 'file_name': 'doc2.txt',
+                                                                 'content': 'Document 2 talks about bananas and apples.'}},
+            ]
+        }
+    }
+
+    mock_es_get_response_object = MagicMock(name="ESGetResponseObject")
+
+    def es_response_object_get_side_effect(key_to_fetch):
+        data_for_get = {
+            '_source': {'id': 'doc_detail_id', 'file_name': 'detail.txt', 'content': 'Full detailed content.'},
+            'found': True
+        }
+        return data_for_get.get(key_to_fetch)
+
+    mock_es_get_response_object.get.side_effect = es_response_object_get_side_effect
+
+    mock_es.es_client.get.return_value = mock_es_get_response_object
+
+    mock_es.es_client.exists.return_value = True
+    return mock_es
+
+
+@pytest.fixture
+def search_orchestrator_instance(mock_es_service_for_orchestrator, monkeypatch):
+    monkeypatch.setattr(
+        'python_backend_services.app.services.search_orchestrator.ElasticsearchService',
+        lambda *args, **kwargs: mock_es_service_for_orchestrator
+    )
+    orchestrator = SearchOrchestrator()
+    assert orchestrator.es_service == mock_es_service_for_orchestrator
+    return orchestrator
+
+
+def test_search_petitions_bm25_only_success(search_orchestrator_instance,
+                                            mock_es_service_for_orchestrator):
+    orchestrator = search_orchestrator_instance
+    user_query = "apples"
+    top_n_expected = settings.BM25_TOP_N_RESULTS
+
+    results = orchestrator.search_petitions_bm25_only(user_query)
+
+    mock_es_service_for_orchestrator.es_client.search.assert_called_once()
+    actual_call_kwargs = mock_es_service_for_orchestrator.es_client.search.call_args.kwargs
+
+    assert actual_call_kwargs['index'] == settings.ELASTICSEARCH_INDEX_NAME
+    assert actual_call_kwargs['body']['query']['match']['content'] == user_query
+    assert actual_call_kwargs['body']['size'] == top_n_expected
+    assert "_source" in actual_call_kwargs['body']
+
+    assert len(results) == 2
+    assert results[0]['document_id'] == 'doc1_es_id'
+    assert results[0]['file_name'] == 'doc1.txt'
+    assert "apples" in results[0]['content_preview']
+    assert results[0]['score'] == 1.5
+
+
+def test_search_petitions_bm25_only_no_results(search_orchestrator_instance,
+                                               mock_es_service_for_orchestrator):
+    orchestrator = search_orchestrator_instance
+    mock_es_service_for_orchestrator.es_client.search.return_value = {'hits': {'hits': []}}
+
+    results = orchestrator.search_petitions_bm25_only("query with no results")
+    assert len(results) == 0
+
+
+def test_search_petitions_bm25_only_es_service_unavailable(search_orchestrator_instance,
+                                                           mock_es_service_for_orchestrator):
+    orchestrator = search_orchestrator_instance
+
+    original_es_service = orchestrator.es_service
+
+    if orchestrator.es_service:
+        orchestrator.es_service.es_client = None
+    results_no_client = orchestrator.search_petitions_bm25_only("query")
+    assert results_no_client == []
+
+    if original_es_service:
+        orchestrator.es_service = original_es_service
+        if hasattr(original_es_service, 'es_client'):
+            orchestrator.es_service.es_client = original_es_service.es_client
+
+    orchestrator.es_service = None
+    results_no_service = orchestrator.search_petitions_bm25_only("query")
+    assert results_no_service == []
+
+
+def test_search_petitions_bm25_only_es_exception(search_orchestrator_instance,
+                                                 mock_es_service_for_orchestrator):
+    orchestrator = search_orchestrator_instance
+    if orchestrator.es_service and orchestrator.es_service.es_client:
+        orchestrator.es_service.es_client.search.side_effect = Exception("ES Down")
+        results = orchestrator.search_petitions_bm25_only("any query")
+        assert results == []
+    else:
+        pytest.skip("Skipping ES exception test as ES service or client was not available on orchestrator")
+
+
+def test_get_document_details_by_id_success(search_orchestrator_instance,
+                                            mock_es_service_for_orchestrator):
+    orchestrator = search_orchestrator_instance
+    doc_id = "doc_detail_id"
+
+    expected_source = {'id': 'doc_detail_id', 'file_name': 'detail.txt', 'content': 'Full detailed content.'}
+
+    if orchestrator.es_service and orchestrator.es_service.es_client:
+        mock_response_obj = orchestrator.es_service.es_client.get.return_value
+
+        def get_method_side_effect_specific(key_to_get):
+            if key_to_get == '_source':
+                return expected_source
+            elif key_to_get == 'found':
+                return True
+            return None
+
+        mock_response_obj.get.side_effect = get_method_side_effect_specific
+    else:
+        pytest.skip("Skipping get_document_details_by_id_success as ES service is not available")
+
+    details = orchestrator.get_document_details_by_id(doc_id)
+
+    mock_es_service_for_orchestrator.es_client.exists.assert_called_with(index=settings.ELASTICSEARCH_INDEX_NAME,
+                                                                                id=doc_id)
+    mock_es_service_for_orchestrator.es_client.get.assert_called_with(index=settings.ELASTICSEARCH_INDEX_NAME,
+                                                                             id=doc_id)
+    assert details is not None
+    assert details['id'] == "doc_detail_id"
+    assert details['content'] == "Full detailed content."
+
+
+def test_get_document_details_by_id_not_found(search_orchestrator_instance,
+                                              mock_es_service_for_orchestrator):
+    orchestrator = search_orchestrator_instance
+    doc_id = "non_existent_id"
+    mock_es_service_for_orchestrator.es_client.exists.return_value = False
+
+    details = orchestrator.get_document_details_by_id(doc_id)
+
+    mock_es_service_for_orchestrator.es_client.exists.assert_called_with(index=settings.ELASTICSEARCH_INDEX_NAME,
+                                                                                id=doc_id)
+    mock_es_service_for_orchestrator.es_client.get.assert_not_called()
+    assert details is None
+
+
+
+```
+
+### Arquivo: python_backend_services/tests/__init__.py
+```python
+
+```
+
+### Arquivo: python_backend_services/tests/__pycache__/conftest.cpython-311-pytest-8.3.5.pyc
+```python
+[Erro ao ler o arquivo: 'utf-8' codec can't decode byte 0xa7 in position 0: invalid start byte]
+```
+
+### Arquivo: python_backend_services/tests/__pycache__/test_search_api.cpython-311-pytest-8.3.5.pyc
+```python
+[Erro ao ler o arquivo: 'utf-8' codec can't decode byte 0xa7 in position 0: invalid start byte]
+```
+
+### Arquivo: python_backend_services/tests/__pycache__/test_search_orchestrator_stage1.cpython-311-pytest-8.3.5.pyc
+```python
+[Erro ao ler o arquivo: 'utf-8' codec can't decode byte 0xa7 in position 0: invalid start byte]
+```
+
+### Arquivo: python_backend_services/tests/__pycache__/test_search_api_stage1.cpython-311-pytest-8.3.5.pyc
+```python
+[Erro ao ler o arquivo: 'utf-8' codec can't decode byte 0xa7 in position 0: invalid start byte]
+```
+
+### Arquivo: python_backend_services/tests/__pycache__/test_search_orchestrator.cpython-311-pytest-8.3.5.pyc
+```python
+[Erro ao ler o arquivo: 'utf-8' codec can't decode byte 0xa7 in position 0: invalid start byte]
+```
+
+### Arquivo: python_backend_services/tests/__pycache__/test_glossary_service_app.cpython-311-pytest-8.3.5.pyc
+```python
+[Erro ao ler o arquivo: 'utf-8' codec can't decode byte 0xa7 in position 0: invalid start byte]
+```
+
+### Arquivo: python_backend_services/tests/__pycache__/__init__.cpython-311.pyc
+```python
+[Erro ao ler o arquivo: 'utf-8' codec can't decode byte 0xa7 in position 0: invalid start byte]
+```
+
+### Arquivo: python_backend_services/tests/__pycache__/test_llm_service.cpython-311-pytest-8.3.5.pyc
+```python
+[Erro ao ler o arquivo: 'utf-8' codec can't decode byte 0xa7 in position 0: invalid start byte]
+```
+
+### Arquivo: python_backend_services/__pycache__/__init__.cpython-311.pyc
+```python
+[Erro ao ler o arquivo: 'utf-8' codec can't decode byte 0xa7 in position 0: invalid start byte]
+```
+
+### Arquivo: python_backend_services/data_ingestion/glossary_processor.py
+```python
+# python_backend_services/data_ingestion/glossary_processor.py
+import csv
+from typing import List, Set, Dict
+import logging
+import re
+
+# Configure basic logging
+logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(module)s - %(message)s')
+logger = logging.getLogger(__name__)
+
+
+def load_glossary_terms(glossary_file_path: str) -> Set[str]:
+    """
+    Loads legal terms from a TSV glossary file.
+    Assumes the term is in the second column (index 1) and skips the header.
+    Terms are converted to lowercase.
+
+    Args:
+        glossary_file_path (str): Path to the TSV glossary file.
+
+    Returns:
+        Set[str]: A set of unique glossary terms in lowercase.
+    """
+    terms: Set[str] = set()
+    try:
+        with open(glossary_file_path, 'r', encoding='utf-8') as f:
+            reader = csv.reader(f, delimiter='\t')
+            try:
+                next(reader)  # Skip the header row
+            except StopIteration:
+                logger.warning(f"Glossary file '{glossary_file_path}' is empty or has only a header.")
+                return terms
+
+            for row_number, row in enumerate(reader, 2):
+                if row and len(row) > 1:
+                    term = row[1].strip().lower()
+                    if term and not term.startswith("=ai("):  # Basic filter
+                        terms.add(term)
+                # else:
+                #     logger.debug(f"Skipping malformed or short row {row_number} in glossary: {row}")
+        logger.info(f"Loaded {len(terms)} unique terms from glossary: {glossary_file_path}")
+    except FileNotFoundError:
+        logger.error(f"Glossary file not found: {glossary_file_path}")
+    except Exception as e:
+        logger.error(f"Error loading glossary from '{glossary_file_path}': {e}")
+    return terms
+
+
+def find_glossary_terms_in_document(document_content: str, glossary_terms: Set[str]) -> List[str]:
+    """
+    Finds which glossary terms are present in the document content.
+    Uses simple substring matching after normalizing document content.
+    Considers whole word matching to reduce false positives.
+
+    Args:
+        document_content (str): The text content of the document.
+        glossary_terms (Set[str]): A set of glossary terms (lowercase).
+
+    Returns:
+        List[str]: A list of unique glossary terms found in the document.
+    """
+    if not document_content or not glossary_terms:
+        return []
+
+    # Normalize document content: lowercase and replace non-alphanumeric with spaces for word boundary checks
+    # This helps in matching whole words.
+    # We keep some punctuation that might be part of terms, e.g. "direito de família"
+    # A more sophisticated approach might use NLP tokenization.
+    normalized_content = " " + document_content.lower() + " "
+
+    # Replace punctuation (except hyphens if terms might contain them) with spaces
+    # This helps in creating word boundaries for regex.
+    # This regex keeps alphanumeric, spaces, and hyphens. Other punctuation becomes a space.
+    normalized_content_for_regex = re.sub(r'[^\w\s-]', ' ', document_content.lower())
+    # Add spaces at the beginning and end to ensure boundary matching for terms at start/end of content
+    normalized_content_for_regex = f" {normalized_content_for_regex} "
+
+    found_terms: Set[str] = set()
+    for term in glossary_terms:
+        if not term:  # Skip empty terms from glossary if any
+            continue
+        # Use regex for whole word matching. \b matches word boundaries.
+        # Escape the term in case it contains special regex characters.
+        # The pattern ensures the term is surrounded by word boundaries.
+        # Example: term "lei" should not match "eleitoral"
+        # Pattern: \bterm\b
+        try:
+            # We search in normalized_content_for_regex which has clear word boundaries
+            if re.search(r'\b' + re.escape(term) + r'\b', normalized_content_for_regex):
+                found_terms.add(term)
+        except re.error as e:
+            logger.warning(f"Regex error for term '{term}': {e}. Skipping this term for matching.")
+
+    return sorted(list(found_terms))
+
+
+def process_documents_with_glossary(
+        documents: List[Dict[str, any]],
+        glossary_terms: Set[str]
+) -> List[Dict[str, any]]:
+    """
+    Iterates through documents and adds a list of found glossary terms to each.
+
+    Args:
+        documents (List[Dict[str, any]]): List of parsed document dictionaries.
+                                           Each dict must have a "content" key.
+        glossary_terms (Set[str]): A set of glossary terms to search for.
+
+    Returns:
+        List[Dict[str, any]]: The list of documents, with each document dictionary
+                              updated with a "glossary_terms_found" key.
+    """
+    logger.info(f"Processing {len(documents)} documents to find glossary terms...")
+    for doc in documents:
+        if "content" in doc and isinstance(doc["content"], str):
+            found_in_doc = find_glossary_terms_in_document(doc["content"], glossary_terms)
+            doc["glossary_terms_found"] = found_in_doc
+            if found_in_doc:
+                logger.debug(f"Found terms {found_in_doc} in document ID {doc.get('id', 'N/A')}")
+        else:
+            doc["glossary_terms_found"] = []
+            logger.warning(f"Document ID {doc.get('id', 'N/A')} missing 'content' or content is not a string.")
+
+    logger.info("Finished processing documents with glossary.")
+    return documents
+
+
+if __name__ == '__main__':
+    # Example usage:
+    import sys
+    import os
+
+    # sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..')))
+
+    try:
+        from app.core.config import settings
+
+        GLOSSARY_PATH = settings.GLOSSARY_FILE_PATH
+        print(f"Using glossary path from settings: {GLOSSARY_PATH}")
+    except ImportError:
+        print("Could not import settings. Using a default path for testing glossary.")
+        # Create a dummy glossary.tsv for direct execution testing
+        GLOSSARY_PATH = "../../shared_data/glossario.tsv"
+        os.makedirs(os.path.dirname(GLOSSARY_PATH), exist_ok=True)
+        with open(GLOSSARY_PATH, "w", encoding="utf-8") as f:
+            f.write("ID\tTermo Jurídico\tDefinição\n")
+            f.write("1\tdireito de família\tRegras sobre relações familiares.\n")
+            f.write("2\tusucapião\tAquisição de propriedade pelo tempo.\n")
+            f.write("3\tpensão alimentícia\tValor para sustento.\n")
+            f.write("4\t\t\t\n")  # Empty term test
+            f.write("5\tguarda compartilhada\tResponsabilidade parental dividida.\n")
+
+    # Load terms
+    terms = load_glossary_terms(GLOSSARY_PATH)
+    print(f"\nLoaded glossary terms: {terms}")
+
+    # Example documents for testing
+    example_docs_for_glossary = [
+        {"id": "doc1",
+         "content": "Este documento fala sobre o direito de família e a importância da pensão alimentícia."},
+        {"id": "doc2", "content": "Trata-se de um caso de usucapião de um imóvel rural. A lei de usucapião é clara."},
+        {"id": "doc3", "content": "Nenhuma menção a termos jurídicos conhecidos aqui."},
+        {"id": "doc4", "content": "A guarda compartilhada foi decidida pelo juiz."},
+        {"id": "doc5", "content": None},  # Test missing content
+        {"id": "doc6", "content": "Direito De Família é complexo."}  # Test case insensitivity
+    ]
+
+    # Process documents
+    processed_docs = process_documents_with_glossary(example_docs_for_glossary, terms)
+    print("\n--- Processed Documents with Glossary Terms ---")
+    for p_doc in processed_docs:
+        print(f"Document ID: {p_doc['id']}, Found Terms: {p_doc['glossary_terms_found']}")
+
+    # Test with a more complex sentence and term
+    complex_content = "O processo de usucapião extraordinário exige posse mansa e pacífica. A lei é clara."
+    found = find_glossary_terms_in_document(complex_content, {"usucapião", "lei"})
+    print(f"\nTest complex content: '{complex_content}'")
+    print(f"Found terms: {found}")  # Expected: ['lei', 'usucapião']
+
+```
+
+### Arquivo: python_backend_services/data_ingestion/indexer_service.py
+```python
+# python_backend_services/data_ingestion/indexer_service.py
+from elasticsearch import Elasticsearch, exceptions as es_exceptions
+from elasticsearch.helpers import bulk
+from typing import List, Dict, Any, Optional
+import logging
+import time
+
+# Configure basic logging
+logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(module)s - %(message)s')
+logger = logging.getLogger(__name__)
+
+
+class ElasticsearchService:
+    def __init__(self, es_hosts: List[str], es_user: Optional[str] = None, es_password: Optional[str] = None):
+        """
+        Initializes the Elasticsearch client.
+
+        Args:
+            es_hosts (List[str]): List of Elasticsearch node URLs (e.g., ["http://localhost:9200"]).
+            es_user (Optional[str]): Username for Elasticsearch basic authentication.
+            es_password (Optional[str]): Password for Elasticsearch basic authentication.
+        """
+        http_auth = None
+        if es_user and es_password:
+            http_auth = (es_user, es_password)
+
+        try:
+            self.es_client = Elasticsearch(
+                hosts=es_hosts,
+                http_auth=http_auth,
+                retry_on_timeout=True,
+                max_retries=3
+            )
+            if not self.es_client.ping():
+                raise ConnectionError("Failed to connect to Elasticsearch cluster.")
+            logger.info(f"Successfully connected to Elasticsearch at {es_hosts}")
+        except ConnectionError as ce:
+            logger.error(f"Elasticsearch connection error: {ce}")
+            raise
+        except Exception as e:
+            logger.error(f"An unexpected error occurred during Elasticsearch client initialization: {e}")
+            raise
+
+    def create_index_if_not_exists(self, index_name: str, index_settings: Optional[Dict[str, Any]] = None) -> None:
+        """
+        Creates an Elasticsearch index if it doesn't already exist.
+
+        Args:
+            index_name (str): The name of the index to create.
+            index_settings (Optional[Dict[str, Any]]): Custom settings and mappings for the index.
+        """
+        if self.es_client.indices.exists(index=index_name):
+            logger.info(f"Index '{index_name}' already exists.")
+            return
+
+        if index_settings is None:
+            # Define a default mapping if none is provided
+            # This is a very basic mapping, customize it for your needs (analyzers, field types, etc.)
+            index_settings = {
+                "settings": {
+                    "number_of_shards": 1,
+                    "number_of_replicas": 0,  # For local development, 0 replicas is fine
+                    "analysis": {
+                        "analyzer": {
+                            "default": {  # Using 'default' to override the standard analyzer
+                                "type": "custom",
+                                "tokenizer": "standard",
+                                "filter": ["lowercase", "asciifolding"]  # Basic filters
+                            },
+                            "portuguese_analyzer": {  # Example specific analyzer for Portuguese
+                                "type": "custom",
+                                "tokenizer": "standard",
+                                "filter": [
+                                    "lowercase",
+                                    "asciifolding",
+                                    # "portuguese_stop", # Requires stop filter setup
+                                    # "portuguese_stemmer" # Requires stemmer filter setup
+                                ]
+                            }
+                        }
+                        # Define filters like 'portuguese_stop', 'portuguese_stemmer' if needed
+                        # "filter": {
+                        #     "portuguese_stop": {
+                        #         "type": "stop",
+                        #         "stopwords": "_portuguese_"
+                        #     },
+                        #     "portuguese_stemmer": {
+                        #         "type": "stemmer",
+                        #         "language": "portuguese"
+                        #     }
+                        # }
+                    }
+                },
+                "mappings": {
+                    "properties": {
+                        "id": {"type": "keyword"},  # Document ID from filename
+                        "file_name": {"type": "keyword"},
+                        "file_path": {"type": "keyword"},
+                        "content": {
+                            "type": "text",
+                            "analyzer": "portuguese_analyzer"  # Use specific analyzer for content
+                            # "analyzer": "standard" # Or a simpler one
+                        },
+                        "tags": {"type": "keyword"},
+                        # Tags are usually treated as keywords for exact matching/filtering
+                        "glossary_terms_found": {"type": "keyword"},
+                        "area_of_law": {"type": "keyword"},
+                        # Add other fields and their types as needed
+                        # "embedding": {"type": "dense_vector", "dims": 768} # Example for vector embeddings
+                    }
+                }
+            }
+
+        try:
+            self.es_client.indices.create(index=index_name, body=index_settings)
+            logger.info(f"Index '{index_name}' created successfully with specified mappings.")
+        except es_exceptions.RequestError as e:
+            if e.error == 'resource_already_exists_exception':
+                logger.info(f"Index '{index_name}' already exists (caught during create).")
+            else:
+                logger.error(f"Failed to create index '{index_name}': {e}")
+                raise
+        except Exception as e:
+            logger.error(f"An unexpected error occurred while creating index '{index_name}': {e}")
+            raise
+
+    def bulk_index_documents(self, index_name: str, documents: List[Dict[str, Any]]) -> tuple[int, list]:
+        """
+        Indexes a list of documents into Elasticsearch using the bulk API.
+        Each document dictionary must have an "id" key to be used as the Elasticsearch document ID.
+
+        Args:
+            index_name (str): The name of the index.
+            documents (List[Dict[str, Any]]): A list of document dictionaries to index.
+
+        Returns:
+            tuple[int, list]: Number of successfully indexed documents, and a list of errors.
+        """
+        if not documents:
+            logger.info("No documents provided for bulk indexing.")
+            return 0, []
+
+        actions = [
+            {
+                "_index": index_name,
+                "_id": doc.get("id"),  # Use the "id" field from your document data
+                "_source": doc
+            }
+            for doc in documents if doc.get("id")  # Ensure document has an ID
+        ]
+
+        if not actions:
+            logger.warning("No documents with valid IDs found for bulk indexing.")
+            return 0, []
+
+        logger.info(f"Attempting to bulk index {len(actions)} documents into '{index_name}'...")
+        try:
+            success_count, errors = bulk(self.es_client, actions, raise_on_error=False, raise_on_exception=False)
+            logger.info(f"Bulk indexing complete. Successfully indexed: {success_count} documents.")
+            if errors:
+                logger.error(f"Errors occurred during bulk indexing: {len(errors)}")
+                for i, error in enumerate(errors[:5]):  # Log first 5 errors
+                    logger.error(f"Error {i + 1}: {error}")
+            return success_count, errors
+        except es_exceptions.ElasticsearchException as e:
+            logger.error(f"Elasticsearch bulk operation failed: {e}")
+            return 0, [str(e)]  # Return the exception as an error
+        except Exception as e:
+            logger.error(f"An unexpected error occurred during bulk indexing: {e}")
+            return 0, [str(e)]
+
+    def delete_index(self, index_name: str) -> bool:
+        """Deletes an Elasticsearch index."""
+        if not self.es_client.indices.exists(index=index_name):
+            logger.info(f"Index '{index_name}' does not exist, cannot delete.")
+            return False
+        try:
+            self.es_client.indices.delete(index=index_name)
+            logger.info(f"Index '{index_name}' deleted successfully.")
+            return True
+        except Exception as e:
+            logger.error(f"Failed to delete index '{index_name}': {e}")
+            return False
+
+    # Add other methods as needed (e.g., search, get_document_by_id, update_document)
+    # These will be used by the `search_orchestrator.py` in the `app/services` module.
+
+
+if __name__ == '__main__':
+    # Example Usage (requires Elasticsearch to be running)
+    import sys
+    import os
+
+    # sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..')))
+
+    try:
+        from app.core.config import settings
+
+        ES_HOSTS = settings.ELASTICSEARCH_HOSTS
+        ES_INDEX = settings.ELASTICSEARCH_INDEX_NAME
+        ES_USER = settings.ELASTICSEARCH_USER
+        ES_PASSWORD = settings.ELASTICSEARCH_PASSWORD
+        print(f"Using Elasticsearch settings: Hosts={ES_HOSTS}, Index={ES_INDEX}")
+    except ImportError:
+        print("Could not import settings. Using default Elasticsearch config for testing.")
+        ES_HOSTS = ["http://localhost:9200"]
+        ES_INDEX = "test_petitions_index"
+        ES_USER = None
+        ES_PASSWORD = None
+
+    try:
+        es_service = ElasticsearchService(es_hosts=ES_HOSTS, es_user=ES_USER, es_password=ES_PASSWORD)
+
+        # 1. Optionally delete the index if it exists (for a clean test run)
+        print(f"\nAttempting to delete index '{ES_INDEX}' if it exists...")
+        es_service.delete_index(ES_INDEX)
+        time.sleep(1)  # Give ES a moment
+
+        # 2. Create the index with specific mappings
+        print(f"\nAttempting to create index '{ES_INDEX}'...")
+        es_service.create_index_if_not_exists(ES_INDEX)  # Default mappings will be used if not specified
+
+        # 3. Prepare some dummy documents for indexing
+        dummy_documents = [
+            {"id": "doc_001", "file_name": "pet_alimentos.txt",
+             "content": "Petição inicial de ação de alimentos para menor.", "tags": ["alimentos", "família"],
+             "glossary_terms_found": ["alimentos", "pensão alimentícia"], "area_of_law": "Familia"},
+            {"id": "doc_002", "file_name": "contrato_compra_venda.txt",
+             "content": "Contrato de compra e venda de imóvel residencial.", "tags": ["contrato", "imóvel", "civil"],
+             "glossary_terms_found": ["contrato de compra e venda"], "area_of_law": "Civil"},
+            {"id": "doc_003", "file_name": "defesa_usucapiao.txt",
+             "content": "Peça de defesa em processo de usucapião especial urbano.",
+             "tags": ["usucapião", "defesa", "imóvel"], "glossary_terms_found": ["usucapião"], "area_of_law": "Civil"}
+        ]
+        print(f"\nAttempting to bulk index {len(dummy_documents)} dummy documents...")
+        success_count, errors = es_service.bulk_index_documents(ES_INDEX, dummy_documents)
+        print(f"Indexing result - Success: {success_count}, Errors: {len(errors)}")
+        if errors:
+            print("First error:", errors[0])
+
+        # Verify by checking index count (optional)
+        if es_service.es_client.indices.exists(index=ES_INDEX):
+            time.sleep(1)  # Allow time for indexing to settle
+            count_result = es_service.es_client.count(index=ES_INDEX)
+            print(f"\nDocument count in index '{ES_INDEX}': {count_result.get('count')}")
+
+    except ConnectionError:
+        print("\n❌ Could not connect to Elasticsearch. Please ensure it's running and accessible.")
+    except Exception as e:
+        print(f"\n❌ An unexpected error occurred during the example run: {e}")
+
+
+```
+
+### Arquivo: python_backend_services/data_ingestion/run_ingestion.py
+```python
+# python_backend_services/data_ingestion/run_ingestion.py
+import logging
+import time
+import os
+import sys
+import argparse # Make sure argparse is imported
+
+# --- Setup sys.path if running script directly ---
+# This allows importing modules from the project root (e.g., app.core.config)
+# when 'run_ingestion.py' is executed as the main script.
+# Adjust the number of '..' if your script is nested deeper.
+# current_dir = os.path.dirname(os.path.abspath(__file__))
+# project_root = os.path.abspath(os.path.join(current_dir, '..')) # Assuming data_ingestion is one level below project_root
+# if project_root not in sys.path:
+#    sys.path.insert(0, project_root)
+# --- End sys.path setup ---
+
+try:
+    # These imports assume you are running from the 'bm25_mistral' directory
+    # using 'python -m python_backend_services.data_ingestion.run_ingestion'
+    from python_backend_services.app.core.config import settings
+    from python_backend_services.data_ingestion.document_parser import discover_and_parse_documents
+    from python_backend_services.data_ingestion.glossary_processor import load_glossary_terms, process_documents_with_glossary
+    from python_backend_services.data_ingestion.tag_extractor import process_documents_for_tags
+    from python_backend_services.data_ingestion.indexer_service import ElasticsearchService
+except ImportError as e:
+    print(f"Error importing modules. Current sys.path: {sys.path}")
+    print(f"Details: {e}")
+    print("Ensure you are running from the project root ('bm25_mistral') using 'python -m python_backend_services.data_ingestion.run_ingestion'")
+    print("Also ensure all necessary __init__.py files exist in your package directories.")
+    sys.exit(1)
+
+
+# Configure logging for the ingestion process
+logging.basicConfig(level=settings.LOG_LEVEL,
+                    format='%(asctime)s - %(levelname)s - %(name)s - %(module)s - %(message)s')
+logger = logging.getLogger(__name__)  # Get a logger specific to this module
+
+
+def main_ingestion_pipeline(recreate_index: bool = False):
+    """
+    Main pipeline for discovering, parsing, processing, and indexing documents.
+    Args:
+        recreate_index (bool): If True, deletes the existing Elasticsearch index before creating a new one.
+                               Use with caution in production.
+    """
+    start_time = time.time()
+    logger.info("Starting data ingestion pipeline...")
+
+    # --- 0. Initialize Elasticsearch Service ---
+    try:
+        es_service = ElasticsearchService(
+            es_hosts=settings.ELASTICSEARCH_HOSTS,
+            es_user=settings.ELASTICSEARCH_USER,
+            es_password=settings.ELASTICSEARCH_PASSWORD
+        )
+    except ConnectionError:
+        logger.critical("Failed to connect to Elasticsearch. Aborting ingestion pipeline.")
+        return
+    except Exception as e:
+        logger.critical(f"Failed to initialize ElasticsearchService: {e}. Aborting.")
+        return
+
+    # --- 1. (Optional) Recreate Index ---
+    if recreate_index:
+        logger.warning(f"Recreate_index is True. Attempting to delete index '{settings.ELASTICSEARCH_INDEX_NAME}'...")
+        if es_service.delete_index(settings.ELASTICSEARCH_INDEX_NAME):
+            logger.info(f"Index '{settings.ELASTICSEARCH_INDEX_NAME}' deleted. It will be recreated.")
+            time.sleep(1)  # Give Elasticsearch a moment
+        else:
+            logger.error(
+                f"Failed to delete index '{settings.ELASTICSEARCH_INDEX_NAME}'. It might not exist or an error occurred.")
+
+    # Ensure index exists with correct mappings
+    try:
+        es_service.create_index_if_not_exists(settings.ELASTICSEARCH_INDEX_NAME)
+    except Exception as e:
+        logger.critical(
+            f"Failed to create or verify Elasticsearch index '{settings.ELASTICSEARCH_INDEX_NAME}': {e}. Aborting.")
+        return
+
+    # --- 2. Discover and Parse Documents ---
+    logger.info(f"Loading documents from: {settings.SOURCE_DOCUMENTS_DIR}")
+    documents = discover_and_parse_documents(settings.SOURCE_DOCUMENTS_DIR)
+    if not documents:
+        logger.warning("No documents found or parsed. Exiting pipeline.")
+        return
+    logger.info(f"Parsed {len(documents)} documents.")
+
+    # --- 3. Load Glossary and Process Documents ---
+    logger.info(f"Loading glossary from: {settings.GLOSSARY_FILE_PATH}")
+    glossary_terms_set = load_glossary_terms(settings.GLOSSARY_FILE_PATH)
+    if not glossary_terms_set:
+        logger.warning("Glossary is empty or could not be loaded. Proceeding without glossary term tagging.")
+
+    documents = process_documents_with_glossary(documents, glossary_terms_set)
+    logger.info("Applied glossary terms to documents.")
+
+    # --- 4. Apply Tagging Strategies ---
+    # The keyword map for content tagging could come from settings or another source
+    logger.info("Applying tagging strategies to documents...")
+    # Assuming settings.TAG_KEYWORDS_MAP is defined in your config.py as shown in the example
+    keyword_map_for_tagging = getattr(settings, 'TAG_KEYWORDS_MAP', {})
+    documents = process_documents_for_tags(documents, keyword_map_for_tagging)
+    logger.info("Applied tags to documents.")
+
+    # --- 5. Bulk Index Documents into Elasticsearch ---
+    logger.info(f"Indexing {len(documents)} processed documents into '{settings.ELASTICSEARCH_INDEX_NAME}'...")
+    success_count, errors = es_service.bulk_index_documents(settings.ELASTICSEARCH_INDEX_NAME, documents)
+
+    if errors:
+        logger.error(f"Encountered {len(errors)} errors during bulk indexing.")
+        # Log a few example errors
+        for i, err_detail in enumerate(errors[:5]):
+            logger.error(f"Indexing Error {i + 1}: {err_detail}")
+
+    logger.info(f"Successfully indexed {success_count} out of {len(documents)} documents.")
+
+    end_time = time.time()
+    logger.info(f"Data ingestion pipeline completed in {end_time - start_time:.2f} seconds.")
+    logger.info(f"Total documents processed: {len(documents)}")
+    logger.info(f"Successfully indexed in Elasticsearch: {success_count}")
+
+
+if __name__ == "__main__":
+    # Example: To run with index recreation:
+    # python python_backend_services/data_ingestion/run_ingestion.py --recreate-index
+
+    import argparse
+
+    parser = argparse.ArgumentParser(description="Run the data ingestion pipeline for legal petitions.")
+    parser.add_argument(
+        "--recreate-index",
+        action="store_true",
+        help="If set, deletes and recreates the Elasticsearch index before ingestion."
+    )
+    args = parser.parse_args()
+
+    # Ensure that the current working directory is the project root `bm25_mistral`
+    # or that `python_backend_services` is in PYTHONPATH for imports to work correctly.
+    # If you run `python python_backend_services/data_ingestion/run_ingestion.py`
+    # from `bm25_mistral/`, imports should work if `python_backend_services`
+    # is structured as a package (contains __init__.py files).
+
+    # A simple way to adjust path for direct execution from `python_backend_services/data_ingestion/`
+    # This assumes `app.core.config` is at `../app/core/config.py` relative to this script
+    # and `data_ingestion.document_parser` is in the same directory.
+    # If your project root `bm25_mistral` is not in sys.path,
+    # direct execution might fail to find `app.core.config`.
+    # It's often better to run scripts as modules from the project root if imports are tricky:
+    # python -m python_backend_services.data_ingestion.run_ingestion --recreate-index
+
+    # For direct script execution from any location, more robust path handling might be needed:
+    script_dir = os.path.dirname(os.path.abspath(__file__))
+    # Assuming 'python_backend_services' is the parent of 'data_ingestion'
+    python_backend_services_dir = os.path.dirname(script_dir)
+    # Assuming 'bm25_mistral' is the parent of 'python_backend_services'
+    project_root_dir = os.path.dirname(python_backend_services_dir)
+
+    # Add python_backend_services to sys.path to allow imports like `from app.core...`
+    # and `from data_ingestion...`
+    if python_backend_services_dir not in sys.path:
+        sys.path.insert(0, python_backend_services_dir)
+    # If your 'app' and 'data_ingestion' are direct children of project_root,
+    # and project_root is what you want for top-level package name:
+    if project_root_dir not in sys.path:  # If you treat bm25_mistral as a package root
+        pass  # sys.path.insert(0, project_root_dir) -> this might cause issues if not intended.
+        # Usually, the directory containing your top-level packages (like 'app', 'data_ingestion')
+        # should be in sys.path. Here, `python_backend_services_dir` acts as that.
+
+    main_ingestion_pipeline(recreate_index=args.recreate_index)
+
+```
+
+### Arquivo: python_backend_services/data_ingestion/embedding_generator.py
+```python
+
+```
+
+### Arquivo: python_backend_services/data_ingestion/document_parser.py
+```python
+# python_backend_services/data_ingestion/document_parser.py
+import os
+import glob
+from typing import List, Dict, Optional
+import logging
+
+# Configure basic logging
+logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(module)s - %(message)s')
+logger = logging.getLogger(__name__)
+
+
+def extract_document_id_from_path(file_path: str) -> str:
+    """
+    Extracts a unique document ID from the file path.
+    By default, uses the filename without extension.
+    You might want to customize this for more complex ID generation.
+    """
+    return os.path.splitext(os.path.basename(file_path))[0]
+
+
+def read_txt_file(file_path: str) -> Optional[str]:
+    """
+    Reads the content of a .txt file.
+
+    Args:
+        file_path (str): The path to the .txt file.
+
+    Returns:
+        Optional[str]: The content of the file as a string, or None if an error occurs.
+    """
+    try:
+        with open(file_path, 'r', encoding='utf-8') as f:
+            content = f.read()
+        return content
+    except FileNotFoundError:
+        logger.error(f"File not found: {file_path}")
+        return None
+    except Exception as e:
+        logger.error(f"Error reading file {file_path}: {e}")
+        return None
+
+
+def parse_document(file_path: str) -> Optional[Dict[str, any]]:
+    """
+    Parses a single document file.
+    Extracts content and basic metadata.
+
+    Args:
+        file_path (str): The path to the document file.
+
+    Returns:
+        Optional[Dict[str, any]]: A dictionary containing document data (id, content, path),
+                                   or None if parsing fails.
+    """
+    logger.info(f"Parsing document: {file_path}")
+    content = read_txt_file(file_path)
+    if content is None:
+        return None
+
+    doc_id = extract_document_id_from_path(file_path)
+
+    # Basic metadata, can be expanded
+    document_data = {
+        "id": doc_id,  # Unique identifier for the document
+        "file_path": file_path,
+        "file_name": os.path.basename(file_path),
+        "content": content,
+        "tags": [],  # To be populated by tag_extractor.py
+        "glossary_terms_found": [],  # To be populated by glossary_processor.py
+        # Add other metadata fields as needed, e.g., creation_date, source_folder
+    }
+
+    # Example: Extracting area of law from parent folder if structure is source_documents/petitions/area_law_1/file.txt
+    try:
+        # Assuming 'petitions' is a direct child of source_documents_dir
+        # and area_law folders are direct children of 'petitions'
+        relative_path = os.path.relpath(file_path,
+                                        os.path.join(os.path.dirname(os.path.dirname(file_path)), "petitions"))
+        path_parts = relative_path.split(os.sep)
+        if len(path_parts) > 1:  # Check if there's a subfolder for area of law
+            document_data["area_of_law"] = path_parts[0]
+    except Exception as e:
+        logger.warning(f"Could not extract area_of_law from path {file_path}: {e}")
+
+    return document_data
+
+
+def discover_and_parse_documents(source_dir: str) -> List[Dict[str, any]]:
+    """
+    Discovers all .txt files in the source directory (and its subdirectories)
+    and parses them.
+
+    Args:
+        source_dir (str): The root directory containing .txt petition files.
+
+    Returns:
+        List[Dict[str, any]]: A list of dictionaries, where each dictionary
+                              represents a parsed document.
+    """
+    if not os.path.isdir(source_dir):
+        logger.error(f"Source directory not found or is not a directory: {source_dir}")
+        return []
+
+    logger.info(f"Discovering documents in: {source_dir}")
+    # Using glob to find all .txt files recursively
+    # The pattern '/**/' ensures recursive search in Python 3.5+
+    file_paths = glob.glob(os.path.join(source_dir, '**', '*.txt'), recursive=True)
+
+    parsed_documents = []
+    if not file_paths:
+        logger.warning(f"No .txt files found in {source_dir} or its subdirectories.")
+        return []
+
+    logger.info(f"Found {len(file_paths)} .txt files to parse.")
+
+    for file_path in file_paths:
+        doc_data = parse_document(file_path)
+        if doc_data:
+            parsed_documents.append(doc_data)
+
+    logger.info(f"Successfully parsed {len(parsed_documents)} documents.")
+    return parsed_documents
+
+
+if __name__ == '__main__':
+    # Example usage:
+    # This assumes your config.py is accessible and SOURCE_DOCUMENTS_DIR is set.
+    # You might need to adjust paths if running this file directly for testing.
+    import sys
+
+    # Add project root to sys.path if running directly for testing imports
+    # sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..')))
+
+    try:
+        from app.core.config import settings  # Assuming config.py is in app/core/
+
+        SOURCE_DIR = settings.SOURCE_DOCUMENTS_DIR
+        print(f"Using source directory from settings: {SOURCE_DIR}")
+    except ImportError:
+        print("Could not import settings. Using a default path for testing.")
+        # Fallback for direct execution if settings are not easily importable
+        # Adjust this path to point to your actual test documents for direct run
+        SOURCE_DIR = "../../source_documents/petitions/"
+        if not os.path.exists(SOURCE_DIR):
+            # Create dummy files for testing if they don't exist
+            os.makedirs(os.path.join(SOURCE_DIR, "civil"), exist_ok=True)
+            with open(os.path.join(SOURCE_DIR, "civil", "doc1_civil.txt"), "w", encoding="utf-8") as f:
+                f.write("Este é o conteúdo da petição civil 1 sobre usucapião.")
+            with open(os.path.join(SOURCE_DIR, "doc2_geral.txt"), "w", encoding="utf-8") as f:
+                f.write("Conteúdo geral do documento 2.")
+
+    documents = discover_and_parse_documents(SOURCE_DIR)
+    if documents:
+        print(f"\n--- Example Parsed Documents ({len(documents)} found) ---")
+        for i, doc in enumerate(documents[:2]):  # Print first 2
+            print(f"\nDocument {i + 1}:")
+            print(f"  ID: {doc.get('id')}")
+            print(f"  File Name: {doc.get('file_name')}")
+            print(f"  Area of Law: {doc.get('area_of_law', 'N/A')}")
+            print(f"  Content (first 50 chars): {doc.get('content', '')[:50]}...")
+    else:
+        print("No documents were parsed.")
+
+```
+
+### Arquivo: python_backend_services/data_ingestion/__init__.py
+```python
+
+```
+
+### Arquivo: python_backend_services/data_ingestion/tag_extractor.py
+```python
+# python_backend_services/data_ingestion/tag_extractor.py
+from typing import List, Dict, Set, Optional  # Added Optional here
+import re
+import logging
+
+# Configure basic logging
+logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(module)s - %(message)s')
+logger = logging.getLogger(__name__)
+
+
+# --- Conceptual Tagging Strategies ---
+# You will need to define and implement your actual tagging strategy.
+# Below are some placeholder ideas.
+
+def extract_tags_from_filename(file_name: str) -> List[str]:
+    """
+    Conceptual: Extracts tags based on keywords in the filename.
+    Example: "peticao_alimentos_urgente.txt" -> ["alimentos", "urgente"]
+    """
+    tags: Set[str] = set()
+    # Simple example: split by underscore, remove "peticao", convert to lowercase
+    parts = file_name.lower().replace(".txt", "").split('_')
+    for part in parts:
+        if part not in ["peticao", "acao", "de", "do", "da"] and len(part) > 2:  # Basic stopword list
+            tags.add(part)
+    return sorted(list(tags))
+
+
+def extract_tags_from_content_keywords(
+        document_content: str,
+        tag_keyword_map: Dict[str, List[str]]  # Dict and List are from typing
+) -> List[str]:
+    """
+    Conceptual: Extracts tags by searching for predefined keywords in the document content.
+    The tag_keyword_map maps a found keyword (lowercase) to one or more tags.
+    Example: if "divórcio consensual" is in content, and map has
+             "divórcio consensual": ["divórcio", "direito de família", "consensual"]
+             it would add these tags.
+
+    Args:
+        document_content (str): The text content of the document.
+        tag_keyword_map (Dict[str, List[str]]): A dictionary where keys are keywords
+                                                 (expected to be lowercase) and values are lists of tags.
+                                                 Example: {"usucapião": ["propriedade", "civil"]}
+
+    Returns:
+        List[str]: A list of unique tags found based on keywords.
+    """
+    if not document_content or not tag_keyword_map:
+        return []
+
+    content_lower = document_content.lower()
+    found_tags: Set[str] = set()
+
+    for keyword, tags_for_keyword in tag_keyword_map.items():
+        # Use regex for whole word matching to avoid partial matches (e.g., "art" in "party")
+        # Pattern: \bkeyword\b
+        try:
+            if re.search(r'\b' + re.escape(keyword) + r'\b', content_lower):
+                for tag in tags_for_keyword:
+                    found_tags.add(tag.lower().strip())  # Normalize tags
+        except re.error as e:
+            logger.warning(f"Regex error for keyword '{keyword}': {e}. Skipping this keyword for tagging.")
+
+    return sorted(list(found_tags))
+
+
+def extract_tags_from_embedded_markers(document_content: str) -> List[str]:
+    """
+    Conceptual: Extracts tags if they are embedded in the document content
+    using a specific marker, e.g., "TAGS: [tag1, tag2, tag3]".
+    """
+    tags: Set[str] = set()
+    # Example regex: looks for "TAGS:" followed by bracketed, comma-separated values
+    match = re.search(r'TAGS:\s*\[([^\]]+)\]', document_content, re.IGNORECASE)
+    if match:
+        tags_str = match.group(1)
+        raw_tags = [tag.strip().lower() for tag in tags_str.split(',')]
+        tags.update(filter(None, raw_tags))  # Filter out empty strings
+    return sorted(list(tags))
+
+
+# --- Main Tagging Function ---
+def apply_tagging_strategies(
+        document_data: Dict[str, any],  # Dict is from typing, 'any' needs 'Any' from typing
+        keyword_map_for_content_tagging: Optional[Dict[str, List[str]]] = None  # Optional, Dict, List are from typing
+) -> List[str]:  # List is from typing
+    """
+    Applies various tagging strategies to a document.
+    This function should be customized based on your chosen tagging methods.
+
+    Args:
+        document_data (Dict[str, any]): The dictionary representing a parsed document.
+                                         Must contain "file_name" and "content".
+        keyword_map_for_content_tagging (Optional[Dict[str, List[str]]]):
+            A map of keywords to tags for content-based tagging.
+            If None, this strategy is skipped.
+
+    Returns:
+        List[str]: A list of unique, sorted tags for the document.
+    """
+    all_tags: Set[str] = set()  # Set is from typing
+
+    file_name = document_data.get("file_name", "")
+    content = document_data.get("content", "")
+
+    # Strategy 1: Tags from filename (example)
+    if file_name:
+        tags_from_name = extract_tags_from_filename(file_name)
+        all_tags.update(tags_from_name)
+        if tags_from_name:
+            logger.debug(f"Tags from filename '{file_name}': {tags_from_name}")
+
+    # Strategy 2: Tags from embedded markers in content (example)
+    if content:
+        tags_from_markers = extract_tags_from_embedded_markers(content)
+        all_tags.update(tags_from_markers)
+        if tags_from_markers:
+            logger.debug(f"Tags from embedded markers in doc ID {document_data.get('id', 'N/A')}: {tags_from_markers}")
+
+    # Strategy 3: Tags from keywords in content (example)
+    if content and keyword_map_for_content_tagging:
+        tags_from_keywords = extract_tags_from_content_keywords(content, keyword_map_for_content_tagging)
+        all_tags.update(tags_from_keywords)
+        if tags_from_keywords:
+            logger.debug(f"Tags from content keywords in doc ID {document_data.get('id', 'N/A')}: {tags_from_keywords}")
+
+    final_tags = sorted(list(all_tags))
+    logger.info(f"Applied tagging for doc ID {document_data.get('id', 'N/A')}. Final tags: {final_tags}")
+    return final_tags
+
+
+def process_documents_for_tags(
+        documents: List[Dict[str, any]],  # List, Dict are from typing
+        keyword_map_for_content_tagging: Optional[Dict[str, List[str]]] = None  # Optional, Dict, List are from typing
+) -> List[Dict[str, any]]:  # List, Dict are from typing
+    """
+    Iterates through documents and applies tagging strategies to each.
+    """
+    logger.info(f"Processing {len(documents)} documents for tagging...")
+    for doc_data in documents:
+        existing_tags = set(doc_data.get("tags", []))  # Using built-in set
+        newly_extracted_tags = apply_tagging_strategies(doc_data, keyword_map_for_content_tagging)
+        existing_tags.update(newly_extracted_tags)
+        doc_data["tags"] = sorted(list(existing_tags))  # Using built-in list
+
+    logger.info("Finished processing documents for tags.")
+    return documents
+
+
+if __name__ == '__main__':
+    # Example usage:
+    import sys
+    import os
+
+    try:
+        from app.core.config import settings  # Assuming relative import for app works from context
+
+        KEYWORD_TAG_MAP = settings.TAG_KEYWORDS_MAP
+        print("Using keyword tag map from settings.")
+    except ImportError:
+        print("Could not import settings. Using a default keyword map for testing.")
+        KEYWORD_TAG_MAP = {
+            "alimentos": ["direito de família", "pensão alimentícia"],
+            "divórcio": ["direito de família", "dissolução"],
+            "usucapião": ["civil", "propriedade", "direitos reais"],
+            "contrato de aluguel": ["civil", "contratos", "locação"]
+        }
+
+    example_docs_for_tagging = [
+        {
+            "id": "docA",
+            "file_name": "peticao_alimentos_urgente_modelo.txt",
+            "content": "Esta é uma petição de alimentos. Discute o direito de família e a necessidade de pensão alimentícia. TAGS: [familia, alimentos, urgente]"
+        },
+        {
+            "id": "docB",
+            "file_name": "contrato_locacao_residencial.txt",
+            "content": "Segue modelo de contrato de aluguel para fins residenciais. Envolve direito civil."
+        },
+        {
+            "id": "docC",
+            "file_name": "defesa_usucapiao.txt",
+            "content": "Defesa em ação de usucapião de imóvel urbano."
+        }
+    ]
+
+    processed_docs_with_tags = process_documents_for_tags(example_docs_for_tagging, KEYWORD_TAG_MAP)
+    print("\n--- Processed Documents with Tags ---")
+    for p_doc in processed_docs_with_tags:
+        print(f"Document ID: {p_doc['id']}, Tags: {p_doc['tags']}")
+
+```
+
+### Arquivo: python_backend_services/data_ingestion/__pycache__/tag_extractor.cpython-311.pyc
+```python
+[Erro ao ler o arquivo: 'utf-8' codec can't decode byte 0xa7 in position 0: invalid start byte]
+```
+
+### Arquivo: python_backend_services/data_ingestion/__pycache__/indexer_service.cpython-311.pyc
+```python
+[Erro ao ler o arquivo: 'utf-8' codec can't decode byte 0xa7 in position 0: invalid start byte]
+```
+
+### Arquivo: python_backend_services/data_ingestion/__pycache__/document_parser.cpython-311.pyc
+```python
+[Erro ao ler o arquivo: 'utf-8' codec can't decode byte 0xa7 in position 0: invalid start byte]
+```
+
+### Arquivo: python_backend_services/data_ingestion/__pycache__/run_ingestion.cpython-311.pyc
+```python
+[Erro ao ler o arquivo: 'utf-8' codec can't decode byte 0xa7 in position 0: invalid start byte]
+```
+
+### Arquivo: python_backend_services/data_ingestion/__pycache__/__init__.cpython-311.pyc
+```python
+[Erro ao ler o arquivo: 'utf-8' codec can't decode byte 0xa7 in position 0: invalid start byte]
+```
+
+### Arquivo: python_backend_services/data_ingestion/__pycache__/glossary_processor.cpython-311.pyc
+```python
+[Erro ao ler o arquivo: 'utf-8' codec can't decode byte 0xa7 in position 0: invalid start byte]
+```
+
+### Arquivo: python_backend_services/shared_data/glossario.tsv
+```python
+
+```
+
+### Arquivo: python_backend_services/app/main.py
+```python
+# python_backend_services/app/main.py
+# Entry point for the Stage 1 MVP Flask application.
+from flask import Flask, jsonify
+import logging
+
+# Adjust import paths as necessary
+try:
+    from python_backend_services.app.api.search_api import search_bp
+    from python_backend_services.app.core.config import settings
+    from python_backend_services.app.services.search_orchestrator import \
+        SearchOrchestrator  # Use orchestrator
+except ImportError as e:
+    logging.basicConfig(level="CRITICAL", format='%(asctime)s - %(levelname)s - %(name)s - %(module)s - %(message)s')
+    logging.critical(
+        f"CRITICAL: Failed to import necessary modules for Flask app : {e}. Application cannot start.")
+    raise
+
+# Configure logging AFTER settings are (presumably) imported successfully
+logging.basicConfig(level=settings.LOG_LEVEL,
+                    format='%(asctime)s - %(levelname)s - %(name)s - %(module)s - %(message)s')
+logger = logging.getLogger(__name__)
+
+
+def create_app():
+    app = Flask(__name__)
+    app.config['JSON_AS_ASCII'] = False
+
+    if not hasattr(app, 'extensions'):
+        app.extensions = {}
+
+    try:
+        # Initialize the SearchOrchestrator
+        app.extensions['search_orchestrator'] = SearchOrchestrator()
+        logger.info("SearchOrchestrator initialized and attached to app.extensions.")
+    except Exception as e:
+        logger.critical(f"Failed to initialize SearchOrchestrator during app creation: {e}", exc_info=True)
+        app.extensions['search_orchestrator'] = None  # Mark as unavailable
+
+    # Register the blueprint
+    app.register_blueprint(search_bp)
+    logger.info("Flask application created and search_bp blueprint registered.")
+
+    @app.route('/health', methods=['GET'])  # Distinct health check endpoint name
+    def health_check():
+        health_status = {"status": "healthy", "message": "Flask app is running."}
+
+        orchestrator = app.extensions.get('search_orchestrator')
+        if orchestrator and orchestrator.es_service and hasattr(orchestrator.es_service,
+                                                                'es_client') and orchestrator.es_service.es_client:
+            try:
+                if orchestrator.es_service.es_client.ping():
+                    health_status['elasticsearch_connection'] = 'ok'
+                else:
+                    health_status['elasticsearch_connection'] = 'error_ping_failed'
+                    health_status['status'] = 'unhealthy'
+            except Exception as es_err:
+                health_status['elasticsearch_connection'] = f'error_exception_pinging: {str(es_err)}'
+                health_status['status'] = 'unhealthy'
+        elif orchestrator and (orchestrator.es_service is None or not hasattr(orchestrator.es_service,
+                                                                              'es_client') or orchestrator.es_service.es_client is None):
+            health_status['elasticsearch_connection'] = 'service_not_available_in_orchestrator'
+            health_status['status'] = 'unhealthy'
+        else:
+            health_status['search_orchestrator'] = 'not_initialized_in_app_context'
+            health_status['status'] = 'unhealthy'
+
+        return jsonify(health_status), 200 if health_status['status'] == 'healthy' else 503
+
+    return app
+
+
+app = create_app()
+
+if __name__ == '__main__':
+    logger.info(f"Starting Flask development server (MVP) on [http://0.0.0.0:5000](http://0.0.0.0:5000)")
+    # For Stage 1, debug mode is helpful.
+    app.run(host='0.0.0.0', port=5000, debug=True)  # debug=True is fine for this stage
+```
+
+### Arquivo: python_backend_services/app/__init__.py
+```python
+
+```
+
+### Arquivo: python_backend_services/app/core/config.py
+```python
+# python_backend_services/app/core/config.py
+# This version is slightly simplified for Stage 1 focus,
+# removing Ollama and complex tagging map for now.
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
+
+class Settings:
+    # --- Data Paths ---
+    # Assuming your ingestion pipeline has already run and populated Elasticsearch.
+    # These paths might not be directly used by the app in Stage 1,
+    # but good to keep for consistency.
+    SOURCE_DOCUMENTS_DIR: str = os.getenv("SOURCE_DOCUMENTS_DIR", "./python_backend_services/source_documents/petitions/")
+    GLOSSARY_FILE_PATH: str = os.getenv("GLOSSARY_FILE_PATH", "./python_backend_services/shared_data/glossario.tsv")
+
+    # --- Elasticsearch Configuration ---
+    ELASTICSEARCH_HOSTS: list = [os.getenv("ELASTICSEARCH_HOST", "http://localhost:9200")]
+    ELASTICSEARCH_INDEX_NAME: str = os.getenv("ELASTICSEARCH_INDEX_NAME", "legal_petitions_index") # Ensure this matches your ingested index
+    ELASTICSEARCH_USER: str | None = os.getenv("ELASTICSEARCH_USER")
+    ELASTICSEARCH_PASSWORD: str | None = os.getenv("ELASTICSEARCH_PASSWORD")
+
+    # --- Logging ---
+    LOG_LEVEL: str = os.getenv("LOG_LEVEL", "INFO").upper()
+
+    # --- Search Settings for Stage 1 ---
+    BM25_TOP_N_RESULTS: int = int(os.getenv("BM25_TOP_N_RESULTS", "5")) # Number of results to return from ES
+
+settings = Settings()
+
+
+```
+
+### Arquivo: python_backend_services/app/core/__init__.py
+```python
+
+```
+
+### Arquivo: python_backend_services/app/core/__pycache__/config.cpython-311.pyc
+```python
+[Erro ao ler o arquivo: 'utf-8' codec can't decode byte 0xa7 in position 0: invalid start byte]
+```
+
+### Arquivo: python_backend_services/app/core/__pycache__/__init__.cpython-311.pyc
+```python
+[Erro ao ler o arquivo: 'utf-8' codec can't decode byte 0xa7 in position 0: invalid start byte]
+```
+
+### Arquivo: python_backend_services/app/__pycache__/__init__.cpython-311.pyc
+```python
+[Erro ao ler o arquivo: 'utf-8' codec can't decode byte 0xa7 in position 0: invalid start byte]
+```
+
+### Arquivo: python_backend_services/app/__pycache__/main.cpython-311.pyc
+```python
+[Erro ao ler o arquivo: 'utf-8' codec can't decode byte 0xa7 in position 0: invalid start byte]
+```
+
+### Arquivo: python_backend_services/app/api/search_api.py
+```python
+# python_backend_services/app/api/search_api.py
+# Simplified for Stage 1: Only the /search route calling the BM25-only orchestrator.
+from flask import Blueprint, request, jsonify, current_app
+import logging
+
+# Adjust import path as necessary
+try:
+    from python_backend_services.app.services.search_orchestrator import SearchOrchestrator
+except ImportError as e:
+    logging.basicConfig(level="CRITICAL")
+    logging.critical(f"CRITICAL: Failed to import SearchOrchestrator for API: {e}. API will not work.")
+    raise
+
+logger = logging.getLogger(__name__)
+search_bp = Blueprint('search_api', __name__, url_prefix='/api/v1')  # Using a distinct blueprint name
+
+
+def get_search_orchestrator_from_app() -> SearchOrchestrator:
+    # Assumes orchestrator is initialized and stored in app.extensions by create_app
+    orchestrator = current_app.extensions.get('search_orchestrator')
+    if orchestrator is None:
+        logger.critical("SearchOrchestrator not found in current_app.extensions.")
+        raise RuntimeError("SearchOrchestrator service not initialized properly.")
+    return orchestrator  # type: ignore
+
+
+@search_bp.route('/search', methods=['POST'])
+def search():
+    try:
+        orchestrator = get_search_orchestrator_from_app()
+        if orchestrator.es_service is None or not hasattr(orchestrator.es_service,
+                                                          'es_client') or orchestrator.es_service.es_client is None:
+            logger.error("Search API: Elasticsearch service is not available in orchestrator.")
+            return jsonify({"error": "Search service temporarily unavailable due to backend issue."}), 503
+    except RuntimeError as e:
+        logger.critical(f"Search API: {e}", exc_info=True)
+        return jsonify({"error": "Search service failed to initialize or is not available."}), 500
+    except Exception as e:
+        logger.critical(f"Search API : Unexpected error getting SearchOrchestrator - {e}", exc_info=True)
+        return jsonify({"error": "Search service failed to initialize."}), 500
+
+    try:
+        data = request.get_json()
+        if not data or 'query' not in data:
+            return jsonify({"error": "Missing 'query' in request body"}), 400
+
+        user_query = data['query']
+        # Tags are optional for MVP, orchestrator might not use them in this simplified version
+        # tags = data.get('tags')
+
+        logger.info(f"API /search called with query: '{user_query}'")
+
+        # Call the simplified BM25-only search method
+        results = orchestrator.search_petitions_bm25_only(user_query)
+
+        if results:
+            # For MVP, we return a list of top N documents
+            # Each item in the list has document_id, file_name, content_preview, score
+            return jsonify(results), 200
+        else:
+            return jsonify({"message": "No documents found matching your query"}), 404
+
+    except Exception as e:
+        logger.error(f"Error in /search endpoint: {e}", exc_info=True)
+        return jsonify({"error": "An internal server error occurred"}), 500
+
+
+# If you want a /document/{id} endpoint for Stage 1 (useful for debugging/verification):
+@search_bp.route('/document/<string:document_id>', methods=['GET'])
+def get_document(document_id):
+    try:
+        orchestrator = get_search_orchestrator_from_app()
+        if orchestrator.es_service is None or not hasattr(orchestrator.es_service,
+                                                          'es_client') or orchestrator.es_service.es_client is None:
+            logger.error("Document API (Stage 1): Elasticsearch service is not available in orchestrator.")
+            return jsonify({"error": "Document retrieval service temporarily unavailable."}), 503
+    except RuntimeError as e:
+        logger.critical(f"Document API : {e}", exc_info=True)
+        return jsonify({"error": "Document retrieval service failed to initialize."}), 500
+    except Exception as e:
+        logger.critical(f"Document API : Unexpected error - {e}", exc_info=True)
+        return jsonify({"error": "Document retrieval service failed."}), 500
+
+    try:
+        logger.info(f"API /document/{document_id} called")
+        document_details = orchestrator.get_document_details_by_id(document_id)
+        if document_details:
+            return jsonify(document_details), 200
+        else:
+            return jsonify({"error": f"Document with ID '{document_id}' not found"}), 404
+    except Exception as e:
+        logger.error(f"Error in /document/{document_id} endpoint: {e}", exc_info=True)
+        return jsonify({"error": "An internal server error occurred"}), 500
+
+
+
+
+
+```
+
+### Arquivo: python_backend_services/app/api/__init__.py
+```python
+
+```
+
+### Arquivo: python_backend_services/app/api/__pycache__/__init__.cpython-311.pyc
+```python
+[Erro ao ler o arquivo: 'utf-8' codec can't decode byte 0xa7 in position 0: invalid start byte]
+```
+
+### Arquivo: python_backend_services/app/api/__pycache__/search_api.cpython-311.pyc
+```python
+[Erro ao ler o arquivo: 'utf-8' codec can't decode byte 0xa7 in position 0: invalid start byte]
+```
+
+### Arquivo: python_backend_services/app/services/llm_service.py
+```python
+# python_backend_services/app/services/llm_service.py
+# No changes from v6.
+import requests
+import json
+import logging
+from typing import List, Dict, Optional, Any
+
+try:
+    from python_backend_services.app.core.config import settings
+except ImportError:
+    class FallbackSettingsLLM:
+        OLLAMA_API_URL = "http://localhost:11434/api/generate"
+        OLLAMA_MODEL_NAME = "mistral:7b"
+        OLLAMA_REQUEST_TIMEOUT = 120
+
+
+    settings = FallbackSettingsLLM()  # type: ignore
+    logging.warning("LLM Service: Failed to import app settings. Using fallback settings.")
+
+logger = logging.getLogger(__name__)
+
+
+class MistralReranker:
+    def __init__(self, ollama_api_url: Optional[str] = None,
+                 model_name: Optional[str] = None,
+                 timeout: Optional[int] = None):
+        self.ollama_api_url = ollama_api_url if ollama_api_url is not None else settings.OLLAMA_API_URL
+        self.model_name = model_name if model_name is not None else settings.OLLAMA_MODEL_NAME
+        self.timeout = timeout if timeout is not None else settings.OLLAMA_REQUEST_TIMEOUT
+        logger.info(f"MistralReranker initialized for model '{self.model_name}' at '{self.ollama_api_url}'")
+
+    def rerank_candidates(self, query: str, candidate_documents: List[Dict[str, Any]]) -> Optional[str]:
+        if not candidate_documents:
+            logger.warning("No candidate documents provided for reranking.")
+            return None
+
+        prompt_parts = [f"User Query: \"{query}\"\n"]
+        prompt_parts.append(
+            "Based on the user query, which of the following documents is the most relevant? Provide only the document ID of your choice from the list below. Do not add any other text or explanation.\n")
+
+        for i, doc in enumerate(candidate_documents):
+            content_preview = doc.get('content', '')[:1500]
+            prompt_parts.append(f"\n--- Document Start ---")
+            prompt_parts.append(f"Document ID: {doc.get('id')}")
+            prompt_parts.append(f"Content Preview: {content_preview}")
+            prompt_parts.append(f"--- Document End ---\n")
+
+        full_prompt = "\n".join(prompt_parts)
+        logger.debug(f"Prompt for Ollama reranking (first 500 chars): {full_prompt[:500]}...")
+
+        payload = {
+            "model": self.model_name,
+            "prompt": full_prompt,
+            "stream": False,
+            "options": {
+                "temperature": 0.1
+            }
+        }
+        response_obj = None
+        try:
+            response_obj = requests.post(self.ollama_api_url, json=payload, timeout=self.timeout)
+            response_obj.raise_for_status()
+            response_json = response_obj.json()
+
+            llm_output_text = response_json.get("response", "").strip()
+            logger.info(f"Ollama raw response for reranking: '{llm_output_text}'")
+
+            for doc_candidate in candidate_documents:
+                doc_id = str(doc_candidate.get('id'))
+                if doc_id == llm_output_text:
+                    logger.info(f"LLM reranking selected document ID: {doc_id}")
+                    return doc_id
+                if doc_id in llm_output_text and len(llm_output_text) < (len(doc_id) + 15):
+                    logger.warning(
+                        f"LLM response was not an exact ID match, but found ID '{doc_id}' in a short response: '{llm_output_text}'. Selecting it.")
+                    return doc_id
+
+            logger.warning(
+                f"Could not reliably parse a document ID from LLM response: '{llm_output_text}'. Expected one of {[str(d.get('id')) for d in candidate_documents]}.")
+            return None
+
+        except requests.exceptions.Timeout:
+            logger.error(f"Timeout calling Ollama API at {self.ollama_api_url}")
+            return None
+        except requests.exceptions.RequestException as e:
+            logger.error(f"Error calling Ollama API: {e}")
+            return None
+        except json.JSONDecodeError:
+            logger.error(
+                f"Error decoding JSON response from Ollama: {response_obj.text if response_obj else 'No response object'}")
+            return None
+
+
+
+```
+
+### Arquivo: python_backend_services/app/services/glossary_service.py
+```python
+# python_backend_services/app/services/glossary_service.py
+import csv
+import logging
+from typing import List, Dict, Optional
+import re
+
+try:
+    from python_backend_services.app.core.config import settings
+except ImportError:
+    class FallbackSettingsGlossary:
+        GLOSSARY_FILE_PATH = "./python_backend_services/shared_data/glossario.tsv"
+
+
+    settings = FallbackSettingsGlossary()  # type: ignore
+    logging.warning("Glossary Service: Failed to import app settings. Using fallback settings.")
+
+logger = logging.getLogger(__name__)
+
+
+class QueryEnrichmentService:
+    def __init__(self, glossary_file_path: Optional[str] = None):
+        actual_glossary_path = glossary_file_path if glossary_file_path is not None else settings.GLOSSARY_FILE_PATH
+
+        self.glossary_data: List[Dict[str, str]] = []  # Stores dicts with 'term', 'display_term', 'definition'
+        self._load_glossary(actual_glossary_path)
+        logger.info(
+            f"QueryEnrichmentService initialized with {len(self.glossary_data)} glossary entries from {actual_glossary_path}.")
+
+    def _load_glossary(self, glossary_file_path: str):
+        try:
+            with open(glossary_file_path, 'r', encoding='utf-8') as f:
+                reader = csv.DictReader(f, delimiter='\t')
+                for row in reader:
+                    term = row.get('Termo Jurídico')
+                    definition = row.get('Definição sintética')
+                    if term and term.strip() and definition and definition.strip() and not term.strip().lower().startswith(
+                            "=ai("):
+                        self.glossary_data.append({
+                            "term": term.strip().lower(),
+                            "display_term": term.strip(),  # Keep original case for display
+                            "definition": definition.strip()
+                        })
+            if not self.glossary_data:
+                logger.warning(
+                    f"No valid glossary entries loaded from {glossary_file_path}. Check file format and content (Termo Jurídico, Definição sintética).")
+        except FileNotFoundError:
+            logger.error(f"Glossary file not found for query enrichment: {glossary_file_path}")
+        except Exception as e:
+            logger.error(f"Error loading glossary for query enrichment from '{glossary_file_path}': {e}", exc_info=True)
+
+    def _is_definition_in_query(self, definition: str, query_lower: str) -> bool:
+        normalized_definition = re.sub(r'[.,;:?!]$', '', definition.lower()).strip()
+        normalized_query = re.sub(r'[.,;:?!]$', '', query_lower).strip()
+
+        if not normalized_definition:
+            return False
+
+        def_words = normalized_definition.split()
+        if len(def_words) > 1:
+            return re.search(r'\b' + re.escape(normalized_definition) + r'\b', normalized_query,
+                             re.IGNORECASE) is not None
+        else:  # For single word definitions, simple substring is okay, but could be made stricter
+            return re.search(r'\b' + re.escape(normalized_definition) + r'\b', normalized_query,
+                             re.IGNORECASE) is not None
+
+    def enrich_query(self, query: str) -> str:
+        if not self.glossary_data:
+            return query
+
+        original_query_lower = query.lower()
+        enrichment_texts_set = set()
+
+        for item in self.glossary_data:
+            term_lower_for_match = item["term"]
+            display_term = item["display_term"]
+
+            if re.search(r'\b' + re.escape(term_lower_for_match) + r'\b', original_query_lower, re.IGNORECASE):
+                if item["definition"] and not self._is_definition_in_query(item["definition"], original_query_lower):
+                    if term_lower_for_match != item["definition"].lower():
+                        enrichment_text = f"(contexto do termo '{display_term}': {item['definition']})"
+                        enrichment_texts_set.add(enrichment_text)
+
+        if enrichment_texts_set:
+            logger.debug(
+                f"Enriching query. Original: '{query}'. Added context: {' '.join(sorted(list(enrichment_texts_set)))}")
+            return query + " " + " ".join(sorted(list(enrichment_texts_set)))
+        return query
+
+
+
+```
+
+### Arquivo: python_backend_services/app/services/search_orchestrator.py
+```python
+# python_backend_services/app/services/search_orchestrator.py
+# Simplified for Stage 1: Only BM25 search, no LLM, no query enrichment.
+import logging
+from typing import List, Dict, Optional, Any
+
+# Assuming ElasticsearchService is correctly placed and importable
+# You might need to adjust the import path based on your exact project structure
+# and how you run the application (e.g., if python_backend_services is a top-level package).
+try:
+    from python_backend_services.data_ingestion.indexer_service import ElasticsearchService
+    from python_backend_services.app.core.config import settings
+except ImportError as e:
+    logging.basicConfig(level="CRITICAL")
+    logging.critical(
+        f"CRITICAL: Failed to import necessary modules for SearchOrchestrator (Stage 1): {e}. Ensure paths are correct and __init__.py files exist.")
+    raise
+
+logger = logging.getLogger(__name__)
+
+
+class SearchOrchestrator:
+    def __init__(self):
+        self.es_service: Optional[ElasticsearchService] = None
+        self.index_name: str = settings.ELASTICSEARCH_INDEX_NAME
+        try:
+            self.es_service = ElasticsearchService(
+                es_hosts=settings.ELASTICSEARCH_HOSTS,
+                es_user=settings.ELASTICSEARCH_USER,
+                es_password=settings.ELASTICSEARCH_PASSWORD
+            )
+            logger.info("SearchOrchestrator (Stage 1) initialized with ElasticsearchService.")
+        except ConnectionError as e:
+            logger.critical(
+                f"SearchOrchestrator (Stage 1): Failed to connect to Elasticsearch during init - {e}. Search functionality will be impaired.")
+            # self.es_service remains None
+        except Exception as e:
+            logger.critical(
+                f"SearchOrchestrator (Stage 1): Unexpected error initializing ElasticsearchService - {e}. Search functionality will be impaired.")
+            self.es_service = None  # Ensure es_service is None for other init errors
+
+    def search_petitions_bm25_only(self, user_query: str, top_n: int = settings.BM25_TOP_N_RESULTS) -> List[
+        Dict[str, Any]]:
+        """
+        Performs a direct BM25 search in Elasticsearch based on the user query.
+        No LLM reranking or query enrichment in this stage.
+        """
+        if not self.es_service or not self.es_service.es_client:
+            logger.error("Elasticsearch service is not available for search_petitions_bm25_only.")
+            return []
+
+        logger.info(f"Stage 1 Search: Performing BM25 search for query='{user_query}', top_n={top_n}")
+
+        # Basic Elasticsearch query for full-text search on the 'content' field.
+        # BM25 is the default similarity algorithm for text fields in Elasticsearch.
+        query_body: Dict[str, Any] = {
+            "query": {
+                "match": {
+                    "content": user_query  # Assuming 'content' is the main text field indexed
+                }
+            },
+            "size": top_n,
+            # Request specific fields from _source if needed, otherwise all are returned.
+            # For MVP, returning id, file_name, and a snippet of content might be good.
+            "_source": ["id", "file_name", "content"]
+        }
+
+        try:
+            response = self.es_service.es_client.search(index=self.index_name, body=query_body)
+
+            results = []
+            for hit in response.get('hits', {}).get('hits', []):
+                source_data = hit.get('_source', {})
+                # Ensure the ID from the hit is used, as it's the definitive ES document ID
+                result_item = {
+                    "document_id": hit.get('_id'),
+                    "file_name": source_data.get("file_name"),
+                    # For MVP, return a preview or full content based on what's needed for display/next steps
+                    "content_preview": source_data.get("content", "")[:500] + "..." if source_data.get(
+                        "content") else "",
+                    "score": hit.get('_score')  # BM25 score
+                }
+                results.append(result_item)
+
+            logger.info(f"BM25 search found {len(results)} results.")
+            return results
+        except Exception as e:
+            logger.error(f"Error during Elasticsearch BM25 search in search_petitions_bm25_only: {e}", exc_info=True)
+            return []
+
+    def get_document_details_by_id(self, document_id: str) -> Optional[Dict[str, Any]]:
+        """
+        Retrieves a full document by its ID from Elasticsearch.
+        (This method can be kept from the more complete orchestrator if needed for a /document endpoint)
+        """
+        if not self.es_service or not self.es_service.es_client:
+            logger.error("Elasticsearch service is not available for get_document_details_by_id.")
+            return None
+
+        logger.info(f"Fetching document details for ID: {document_id} from index {self.index_name}")
+        try:
+            if self.es_service.es_client.exists(index=self.index_name, id=document_id):
+                response = self.es_service.es_client.get(index=self.index_name, id=document_id)
+                # The _source field contains the original document JSON
+                return response.get('_source') if response.get('found') else None
+            else:
+                logger.warning(f"Document ID '{document_id}' not found in index '{self.index_name}'.")
+                return None
+        except Exception as e:
+            logger.error(f"Error retrieving document {document_id} from Elasticsearch: {e}", exc_info=True)
+            return None
+
+
+
+
+```
+
+### Arquivo: python_backend_services/app/services/__init__.py
+```python
+
+```
+
+### Arquivo: python_backend_services/app/services/__pycache__/__init__.cpython-311.pyc
+```python
+[Erro ao ler o arquivo: 'utf-8' codec can't decode byte 0xa7 in position 0: invalid start byte]
+```
+
+### Arquivo: python_backend_services/app/services/__pycache__/search_orchestrator.cpython-311.pyc
+```python
+[Erro ao ler o arquivo: 'utf-8' codec can't decode byte 0xa7 in position 0: invalid start byte]
+```
+
+### Arquivo: python_backend_services/app/services/__pycache__/glossary_service.cpython-311.pyc
+```python
+[Erro ao ler o arquivo: 'utf-8' codec can't decode byte 0xa7 in position 0: invalid start byte]
+```
+
+### Arquivo: python_backend_services/app/services/__pycache__/llm_service.cpython-311.pyc
+```python
+[Erro ao ler o arquivo: 'utf-8' codec can't decode byte 0xa7 in position 0: invalid start byte]
+```

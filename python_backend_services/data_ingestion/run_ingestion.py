@@ -1,171 +1,140 @@
 # python_backend_services/data_ingestion/run_ingestion.py
 import logging
 import time
+import argparse
 import os
-import sys
-import argparse # Make sure argparse is imported
 
-# --- Setup sys.path if running script directly ---
-# This allows importing modules from the project root (e.g., app.core.config)
-# when 'run_ingestion.py' is executed as the main script.
-# Adjust the number of '..' if your script is nested deeper.
-# current_dir = os.path.dirname(os.path.abspath(__file__))
-# project_root = os.path.abspath(os.path.join(current_dir, '..')) # Assuming data_ingestion is one level below project_root
-# if project_root not in sys.path:
-#    sys.path.insert(0, project_root)
-# --- End sys.path setup ---
-
+# Imports usando o caminho completo a partir do pacote 'python_backend_services'
+# Isso é crucial quando você executa com `python -m python_backend_services.data_ingestion.run_ingestion`
+# a partir do diretório raiz do projeto (`bm25_mistral`).
 try:
-    # These imports assume you are running from the 'bm25_mistral' directory
-    # using 'python -m python_backend_services.data_ingestion.run_ingestion'
     from python_backend_services.app.core.config import settings
-    from python_backend_services.data_ingestion.document_parser import discover_and_parse_documents
-    from python_backend_services.data_ingestion.glossary_processor import load_glossary_terms, process_documents_with_glossary
-    from python_backend_services.data_ingestion.tag_extractor import process_documents_for_tags
+    from python_backend_services.data_ingestion.document_parser import DocumentParser  # Importa a CLASSE
     from python_backend_services.data_ingestion.indexer_service import ElasticsearchService
+    # Se você reintroduzir glossary_processor e tag_extractor, use o mesmo padrão:
+    # from python_backend_services.data_ingestion.glossary_processor import load_glossary_terms, process_documents_with_glossary
+    # from python_backend_services.data_ingestion.tag_extractor import process_documents_for_tags
 except ImportError as e:
-    print(f"Error importing modules. Current sys.path: {sys.path}")
-    print(f"Details: {e}")
-    print("Ensure you are running from the project root ('bm25_mistral') using 'python -m python_backend_services.data_ingestion.run_ingestion'")
-    print("Also ensure all necessary __init__.py files exist in your package directories.")
-    sys.exit(1)
+    # Este bloco ajuda a diagnosticar problemas de importação se eles ainda ocorrerem.
+    print(f"ERRO DE IMPORTAÇÃO em run_ingestion.py: {e}")
+    print("Verifique se:")
+    print("1. Você está executando este script a partir do diretório raiz do projeto 'bm25_mistral' usando o comando:")
+    print("   python -m python_backend_services.data_ingestion.run_ingestion")
+    print(
+        "2. Todos os diretórios de pacotes (python_backend_services, app, app/core, data_ingestion) contêm um arquivo __init__.py.")
+    print(
+        f"3. PYTHONPATH (se configurado) está correto. Python sys.path atual: {sys.path}")  # Import sys para usar sys.path
+    import sys  # Importa sys aqui para o print acima
+
+    raise  # Re-lança a exceção para parar a execução
+
+# Configura o logging usando o nível definido em settings
+# É importante configurar o logging ANTES de usá-lo nos módulos importados
+logging.basicConfig(level=settings.LOG_LEVEL.upper(),
+                    format='%(asctime)s - %(levelname)s - [%(name)s:%(lineno)d] - %(message)s')
+logger = logging.getLogger(__name__)  # Logger específico para este módulo
 
 
-# Configure logging for the ingestion process
-logging.basicConfig(level=settings.LOG_LEVEL,
-                    format='%(asctime)s - %(levelname)s - %(name)s - %(module)s - %(message)s')
-logger = logging.getLogger(__name__)  # Get a logger specific to this module
+def main(should_recreate_index: bool):
+    logger.info(f"Iniciando pipeline de ingestão de dados... Recriar índice: {should_recreate_index}")
+    overall_start_time = time.time()
 
+    # 1. Inicializar DocumentParser e Parsear Documentos
+    try:
+        if not os.path.exists(settings.METADATA_TSV_PATH):
+            raise FileNotFoundError(f"Arquivo TSV de metadados não encontrado em: {settings.METADATA_TSV_PATH}")
+        if not os.path.isdir(settings.SOURCE_DOCS_BASE_DIR):
+            raise NotADirectoryError(
+                f"Diretório base dos documentos fonte não é válido: {settings.SOURCE_DOCS_BASE_DIR}")
 
-def main_ingestion_pipeline(recreate_index: bool = False):
-    """
-    Main pipeline for discovering, parsing, processing, and indexing documents.
-    Args:
-        recreate_index (bool): If True, deletes the existing Elasticsearch index before creating a new one.
-                               Use with caution in production.
-    """
-    start_time = time.time()
-    logger.info("Starting data ingestion pipeline...")
+        logger.info(
+            f"Inicializando DocumentParser com TSV: '{settings.METADATA_TSV_PATH}' e Base de Documentos: '{settings.SOURCE_DOCS_BASE_DIR}'")
 
-    # --- 0. Initialize Elasticsearch Service ---
+        # AQUI ESTÁ A INSTANCIAÇÃO CORRETA
+        doc_parser_instance = DocumentParser(
+            metadata_tsv_path=settings.METADATA_TSV_PATH,
+            source_docs_base_path=settings.SOURCE_DOCS_BASE_DIR
+        )
+        parsed_docs = doc_parser_instance.parse_documents()  # Chamando o método da instância
+
+    except FileNotFoundError as e:
+        logger.error(f"FALHA CRÍTICA NA INGESTÃO (Arquivo/Diretório): {e}", exc_info=True)
+        return
+    except NotADirectoryError as e:
+        logger.error(f"FALHA CRÍTICA NA INGESTÃO (Caminho Base): {e}", exc_info=True)
+        return
+    except Exception as e:
+        logger.error(f"FALHA CRÍTICA NA INGESTÃO (Erro no Parser): {e}", exc_info=True)
+        return
+
+    if not parsed_docs:
+        logger.info("Nenhum documento foi parseado. Encerrando o pipeline de ingestão.")
+        return
+    logger.info(f"Sucesso: {len(parsed_docs)} documentos parseados e preparados para indexação.")
+
+    # 2. Inicializar ElasticsearchService
     try:
         es_service = ElasticsearchService(
             es_hosts=settings.ELASTICSEARCH_HOSTS,
             es_user=settings.ELASTICSEARCH_USER,
             es_password=settings.ELASTICSEARCH_PASSWORD
         )
-    except ConnectionError:
-        logger.critical("Failed to connect to Elasticsearch. Aborting ingestion pipeline.")
+    except ConnectionError as e:
+        logger.error(f"FALHA CRÍTICA NA INGESTÃO (Conexão ES): {e}", exc_info=False)
         return
     except Exception as e:
-        logger.critical(f"Failed to initialize ElasticsearchService: {e}. Aborting.")
+        logger.error(f"FALHA CRÍTICA NA INGESTÃO (Init ES Service): {e}", exc_info=True)
         return
 
-    # --- 1. (Optional) Recreate Index ---
-    if recreate_index:
-        logger.warning(f"Recreate_index is True. Attempting to delete index '{settings.ELASTICSEARCH_INDEX_NAME}'...")
-        if es_service.delete_index(settings.ELASTICSEARCH_INDEX_NAME):
-            logger.info(f"Index '{settings.ELASTICSEARCH_INDEX_NAME}' deleted. It will be recreated.")
-            time.sleep(1)  # Give Elasticsearch a moment
-        else:
-            logger.error(
-                f"Failed to delete index '{settings.ELASTICSEARCH_INDEX_NAME}'. It might not exist or an error occurred.")
+    if should_recreate_index:
+        logger.info(f"Tentando deletar o índice '{settings.ELASTICSEARCH_INDEX_NAME}'...")
+        try:
+            if es_service.delete_index(settings.ELASTICSEARCH_INDEX_NAME):
+                time.sleep(1)
+        except Exception as e:
+            logger.warning(f"Não foi possível deletar o índice '{settings.ELASTICSEARCH_INDEX_NAME}': {e}",
+                           exc_info=True)
 
-    # Ensure index exists with correct mappings
     try:
-        es_service.create_index_if_not_exists(settings.ELASTICSEARCH_INDEX_NAME)
+        logger.info(
+            f"Tentando criar o índice '{settings.ELASTICSEARCH_INDEX_NAME}' (dimensões embedding: {settings.EMBEDDING_DIMENSIONS})...")
+        es_service.create_index_if_not_exists(
+            index_name=settings.ELASTICSEARCH_INDEX_NAME,
+            embedding_dimensions=settings.EMBEDDING_DIMENSIONS
+        )
     except Exception as e:
-        logger.critical(
-            f"Failed to create or verify Elasticsearch index '{settings.ELASTICSEARCH_INDEX_NAME}': {e}. Aborting.")
+        logger.error(f"FALHA CRÍTICA NA INGESTÃO (Criar Índice ES): {e}", exc_info=True)
         return
 
-    # --- 2. Discover and Parse Documents ---
-    logger.info(f"Loading documents from: {settings.SOURCE_DOCUMENTS_DIR}")
-    documents = discover_and_parse_documents(settings.SOURCE_DOCUMENTS_DIR)
-    if not documents:
-        logger.warning("No documents found or parsed. Exiting pipeline.")
+    documents_for_es_bulk = []
+    for doc in parsed_docs:
+        doc_payload = doc.copy()
+        if "content_embedding" not in doc_payload:  # Garante que o campo exista para o mapeamento
+            doc_payload["content_embedding"] = None
+        documents_for_es_bulk.append(doc_payload)
+
+    try:
+        logger.info(f"Iniciando indexação em lote de {len(documents_for_es_bulk)} documentos...")
+        success_count, errors = es_service.bulk_index_documents(
+            index_name=settings.ELASTICSEARCH_INDEX_NAME,
+            documents=documents_for_es_bulk
+        )
+        logger.info(f"Indexação em lote finalizada. Sucesso: {success_count}. Erros: {len(errors)}.")
+        if errors:
+            logger.error(f"Alguns documentos não foram indexados. Verifique os logs do ElasticsearchService.")
+    except Exception as e:
+        logger.error(f"FALHA CRÍTICA NA INGESTÃO (Bulk Indexing): {e}", exc_info=True)
         return
-    logger.info(f"Parsed {len(documents)} documents.")
 
-    # --- 3. Load Glossary and Process Documents ---
-    logger.info(f"Loading glossary from: {settings.GLOSSARY_FILE_PATH}")
-    glossary_terms_set = load_glossary_terms(settings.GLOSSARY_FILE_PATH)
-    if not glossary_terms_set:
-        logger.warning("Glossary is empty or could not be loaded. Proceeding without glossary term tagging.")
-
-    documents = process_documents_with_glossary(documents, glossary_terms_set)
-    logger.info("Applied glossary terms to documents.")
-
-    # --- 4. Apply Tagging Strategies ---
-    # The keyword map for content tagging could come from settings or another source
-    logger.info("Applying tagging strategies to documents...")
-    # Assuming settings.TAG_KEYWORDS_MAP is defined in your config.py as shown in the example
-    keyword_map_for_tagging = getattr(settings, 'TAG_KEYWORDS_MAP', {})
-    documents = process_documents_for_tags(documents, keyword_map_for_tagging)
-    logger.info("Applied tags to documents.")
-
-    # --- 5. Bulk Index Documents into Elasticsearch ---
-    logger.info(f"Indexing {len(documents)} processed documents into '{settings.ELASTICSEARCH_INDEX_NAME}'...")
-    success_count, errors = es_service.bulk_index_documents(settings.ELASTICSEARCH_INDEX_NAME, documents)
-
-    if errors:
-        logger.error(f"Encountered {len(errors)} errors during bulk indexing.")
-        # Log a few example errors
-        for i, err_detail in enumerate(errors[:5]):
-            logger.error(f"Indexing Error {i + 1}: {err_detail}")
-
-    logger.info(f"Successfully indexed {success_count} out of {len(documents)} documents.")
-
-    end_time = time.time()
-    logger.info(f"Data ingestion pipeline completed in {end_time - start_time:.2f} seconds.")
-    logger.info(f"Total documents processed: {len(documents)}")
-    logger.info(f"Successfully indexed in Elasticsearch: {success_count}")
+    overall_end_time = time.time()
+    logger.info(f"Pipeline de ingestão de dados concluído em {overall_end_time - overall_start_time:.2f} segundos.")
 
 
 if __name__ == "__main__":
-    # Example: To run with index recreation:
-    # python python_backend_services/data_ingestion/run_ingestion.py --recreate-index
-
-    import argparse
-
-    parser = argparse.ArgumentParser(description="Run the data ingestion pipeline for legal petitions.")
-    parser.add_argument(
-        "--recreate-index",
-        action="store_true",
-        help="If set, deletes and recreates the Elasticsearch index before ingestion."
+    cli_parser = argparse.ArgumentParser(description="Pipeline de Ingestão de Dados Jurídicos.")
+    cli_parser.add_argument(
+        "--recreate-index", action="store_true",
+        help="Deleta e recria o índice no Elasticsearch antes da ingestão."
     )
-    args = parser.parse_args()
-
-    # Ensure that the current working directory is the project root `bm25_mistral`
-    # or that `python_backend_services` is in PYTHONPATH for imports to work correctly.
-    # If you run `python python_backend_services/data_ingestion/run_ingestion.py`
-    # from `bm25_mistral/`, imports should work if `python_backend_services`
-    # is structured as a package (contains __init__.py files).
-
-    # A simple way to adjust path for direct execution from `python_backend_services/data_ingestion/`
-    # This assumes `app.core.config` is at `../app/core/config.py` relative to this script
-    # and `data_ingestion.document_parser` is in the same directory.
-    # If your project root `bm25_mistral` is not in sys.path,
-    # direct execution might fail to find `app.core.config`.
-    # It's often better to run scripts as modules from the project root if imports are tricky:
-    # python -m python_backend_services.data_ingestion.run_ingestion --recreate-index
-
-    # For direct script execution from any location, more robust path handling might be needed:
-    script_dir = os.path.dirname(os.path.abspath(__file__))
-    # Assuming 'python_backend_services' is the parent of 'data_ingestion'
-    python_backend_services_dir = os.path.dirname(script_dir)
-    # Assuming 'bm25_mistral' is the parent of 'python_backend_services'
-    project_root_dir = os.path.dirname(python_backend_services_dir)
-
-    # Add python_backend_services to sys.path to allow imports like `from app.core...`
-    # and `from data_ingestion...`
-    if python_backend_services_dir not in sys.path:
-        sys.path.insert(0, python_backend_services_dir)
-    # If your 'app' and 'data_ingestion' are direct children of project_root,
-    # and project_root is what you want for top-level package name:
-    if project_root_dir not in sys.path:  # If you treat bm25_mistral as a package root
-        pass  # sys.path.insert(0, project_root_dir) -> this might cause issues if not intended.
-        # Usually, the directory containing your top-level packages (like 'app', 'data_ingestion')
-        # should be in sys.path. Here, `python_backend_services_dir` acts as that.
-
-    main_ingestion_pipeline(recreate_index=args.recreate_index)
+    args = cli_parser.parse_args()
+    main(should_recreate_index=args.recreate_index)
