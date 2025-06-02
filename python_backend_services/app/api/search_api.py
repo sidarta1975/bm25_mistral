@@ -1,97 +1,77 @@
 # python_backend_services/app/api/search_api.py
-# Simplified for Stage 1: Only the /search route calling the BM25-only orchestrator.
 from flask import Blueprint, request, jsonify, current_app
 import logging
 
-# Adjust import path as necessary
-try:
-    from python_backend_services.app.services.search_orchestrator import SearchOrchestrator
-except ImportError as e:
-    logging.basicConfig(level="CRITICAL")
-    logging.critical(f"CRITICAL: Failed to import SearchOrchestrator for API: {e}. API will not work.")
-    raise
+logger = logging.getLogger(__name__) # Logger específico para este módulo/blueprint
 
-logger = logging.getLogger(__name__)
-search_bp = Blueprint('search_api', __name__, url_prefix='/api/v1')  # Using a distinct blueprint name
-
-
-def get_search_orchestrator_from_app() -> SearchOrchestrator:
-    # Assumes orchestrator is initialized and stored in app.extensions by create_app
-    orchestrator = current_app.extensions.get('search_orchestrator')
-    if orchestrator is None:
-        logger.critical("SearchOrchestrator not found in current_app.extensions.")
-        raise RuntimeError("SearchOrchestrator service not initialized properly.")
-    return orchestrator  # type: ignore
-
+search_bp = Blueprint('search_bp', __name__)
 
 @search_bp.route('/search', methods=['POST'])
-def search():
+def search_documents():
+    """
+    Endpoint para buscar documentos.
+    Espera um JSON no corpo da requisição com a query do usuário.
+    Ex: {"query": "petição de alimentos para menor"}
+    """
     try:
-        orchestrator = get_search_orchestrator_from_app()
-        if orchestrator.es_service is None or not hasattr(orchestrator.es_service,
-                                                          'es_client') or orchestrator.es_service.es_client is None:
-            logger.error("Search API: Elasticsearch service is not available in orchestrator.")
-            return jsonify({"error": "Search service temporarily unavailable due to backend issue."}), 503
-    except RuntimeError as e:
-        logger.critical(f"Search API: {e}", exc_info=True)
-        return jsonify({"error": "Search service failed to initialize or is not available."}), 500
-    except Exception as e:
-        logger.critical(f"Search API : Unexpected error getting SearchOrchestrator - {e}", exc_info=True)
-        return jsonify({"error": "Search service failed to initialize."}), 500
+        search_orchestrator = current_app.extensions.get('search_orchestrator')
+        if not search_orchestrator:
+            logger.error("SearchOrchestrator não encontrado na configuração da aplicação.")
+            return jsonify({"error": "Serviço de busca não está disponível"}), 503
 
-    try:
         data = request.get_json()
-        if not data or 'query' not in data:
-            return jsonify({"error": "Missing 'query' in request body"}), 400
+        if not data or "query" not in data:
+            logger.warning("Requisição de busca recebida sem 'query' no corpo JSON.")
+            return jsonify({"error": "A 'query' é obrigatória no corpo da requisição JSON"}), 400
 
-        user_query = data['query']
-        # Tags are optional for MVP, orchestrator might not use them in this simplified version
-        # tags = data.get('tags')
+        user_query = data["query"].strip()
+        if not user_query:
+            logger.warning("Requisição de busca recebida com 'query' vazia.")
+            return jsonify({"error": "A 'query' não pode ser vazia"}), 400
 
-        logger.info(f"API /search called with query: '{user_query}'")
+        logger.info(f"Recebida requisição de busca: '{user_query}'")
 
-        # Call the simplified BM25-only search method
-        results = orchestrator.search_petitions_bm25_only(user_query)
+        # Chamar o SearchOrchestrator
+        # O resultado deve ser uma estrutura que o bot possa usar
+        # (e.g., ID do documento escolhido, resumo contextual, conteúdo completo ou partes dele)
+        search_result = search_orchestrator.search_and_rerank_documents(user_query)
 
-        if results:
-            # For MVP, we return a list of top N documents
-            # Each item in the list has document_id, file_name, content_preview, score
-            return jsonify(results), 200
+        if search_result:
+            # search_result é esperado ser um dicionário com 'chosen_document_id', 'contextual_summary', 'full_content', etc.
+            # Conforme definido pelo retorno do SearchOrchestrator
+            logger.info(f"Busca bem-sucedida para '{user_query}'. Documento escolhido ID: {search_result.get('chosen_document_id')}")
+            return jsonify(search_result), 200
         else:
-            return jsonify({"message": "No documents found matching your query"}), 404
+            # Pode acontecer se o orchestrator não encontrar nada ou se o LLM falhar no re-rank e não houver fallback
+            logger.warning(f"Nenhum resultado encontrado ou falha no processamento para a query: '{user_query}'")
+            return jsonify({"message": "Nenhum resultado adequado encontrado para sua consulta.", "results": []}), 404
 
     except Exception as e:
-        logger.error(f"Error in /search endpoint: {e}", exc_info=True)
-        return jsonify({"error": "An internal server error occurred"}), 500
+        logger.error(f"Erro inesperado durante a busca de documentos: {e}", exc_info=True)
+        return jsonify({"error": "Ocorreu um erro interno ao processar sua solicitação de busca"}), 500
 
-
-# If you want a /document/{id} endpoint for Stage 1 (useful for debugging/verification):
-@search_bp.route('/document/<string:document_id>', methods=['GET'])
-def get_document(document_id):
-    try:
-        orchestrator = get_search_orchestrator_from_app()
-        if orchestrator.es_service is None or not hasattr(orchestrator.es_service,
-                                                          'es_client') or orchestrator.es_service.es_client is None:
-            logger.error("Document API (Stage 1): Elasticsearch service is not available in orchestrator.")
-            return jsonify({"error": "Document retrieval service temporarily unavailable."}), 503
-    except RuntimeError as e:
-        logger.critical(f"Document API : {e}", exc_info=True)
-        return jsonify({"error": "Document retrieval service failed to initialize."}), 500
-    except Exception as e:
-        logger.critical(f"Document API : Unexpected error - {e}", exc_info=True)
-        return jsonify({"error": "Document retrieval service failed."}), 500
-
-    try:
-        logger.info(f"API /document/{document_id} called")
-        document_details = orchestrator.get_document_details_by_id(document_id)
-        if document_details:
-            return jsonify(document_details), 200
-        else:
-            return jsonify({"error": f"Document with ID '{document_id}' not found"}), 404
-    except Exception as e:
-        logger.error(f"Error in /document/{document_id} endpoint: {e}", exc_info=True)
-        return jsonify({"error": "An internal server error occurred"}), 500
-
-
-
-
+# Você pode adicionar outros endpoints aqui, como:
+# @search_bp.route('/document/<string:doc_id>', methods=['GET'])
+# def get_document_details(doc_id):
+#     # Lógica para buscar e retornar detalhes de um documento específico pelo ID
+#     # (pode buscar diretamente do Elasticsearch ou do SQLite)
+#     search_orchestrator = current_app.extensions.get('search_orchestrator')
+#     # Necessário importar settings se for usar aqui diretamente.
+#     # from python_backend_services.app.core.config import settings
+#     # E também elasticsearch exceptions
+#     # import elasticsearch
+#     if not search_orchestrator or not search_orchestrator.es_service:
+#         return jsonify({"error": "Serviço não disponível"}), 503
+#
+#     try:
+#         # Exemplo: buscar do Elasticsearch
+#         document = search_orchestrator.es_service.es_client.get(
+#             index=settings.ELASTICSEARCH_INDEX_NAME,
+#             id=doc_id
+#         )
+#         return jsonify(document.get('_source', {})), 200
+#     except elasticsearch.NotFoundError: # Supondo que 'elasticsearch' foi importado
+#         return jsonify({"error": "Documento não encontrado"}), 404
+#     except Exception as e:
+#         logger.error(f"Erro ao buscar documento {doc_id}: {e}", exc_info=True)
+#         return jsonify({"error": "Erro interno"}), 500

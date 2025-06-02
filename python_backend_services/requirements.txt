@@ -26,3 +26,5 @@ spacy
 sentence-transformers # If doing embedding generation
 ##For data ingestion if you use pandas for TSV or other structured data
 pandas
+
+gspread google-auth
