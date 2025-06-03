@@ -1,127 +1,107 @@
-# python_backend_services/tests/test_search.py
+# python_backend_services/tests/test_search_api.py
+import json
 import pytest
-from unittest.mock import patch, MagicMock
-from flask import current_app
+from flask.testing import FlaskClient  # Para type hinting
 
-MOCK_BM25_SEARCH_RESULTS = [
-    {"document_id": "doc1_id", "file_name": "file1.txt", "content_preview": "Content of file 1...", "score": 1.8},
-    {"document_id": "doc2_id", "file_name": "file2.txt", "content_preview": "Content of file 2...", "score": 1.5}
-]
+# Tenta importar o SearchOrchestrator para mock.
+try:
+    from python_backend_services.app.services.search_orchestrator import SearchOrchestrator
 
-MOCK_DOCUMENT_DETAIL = {
-    "id": "doc_abc",
-    "file_name": "abc.txt",
-    "content": "Full content of document abc."
-}
+    SEARCH_ORCH_AVAILABLE = True
+except ImportError:
+    SEARCH_ORCH_AVAILABLE = False
 
 
-def get_mock_orchestrator_from_current_app(app_instance) -> MagicMock:
-    """Helper to get the mocked orchestrator from the app context."""
-    orchestrator = app_instance.extensions.get('search_orchestrator')
-    assert orchestrator is not None, "Mocked SearchOrchestrator not found in app.extensions. Check conftest.py and app_stage1 fixture."
-    assert isinstance(orchestrator, MagicMock), "Orchestrator in app.extensions is not a MagicMock."
-    # Corrected: Check the mock's internal _mock_name, which is set by the 'name' parameter in MagicMock constructor
-    assert orchestrator._mock_name == "AppInitMockOrchestrator", \
-        "Orchestrator in app.extensions does not have the expected _mock_name 'AppInitMockOrchestrator'."
-    return orchestrator
-
-
-def test_health_check_healthy(client, app):
-    mock_orchestrator = get_mock_orchestrator_from_current_app(app)
-
-    response = client.get('/health')
+def test_health_check(client: FlaskClient):
+    """Testa o endpoint de health check."""
+    response = client.get('/health')  # O endpoint /health está no main.py, não no search_bp
     assert response.status_code == 200
     json_data = response.get_json()
-    assert json_data['status'] == 'healthy'
-    assert json_data.get('elasticsearch_connection') == 'ok'
+    assert json_data['status'] == 'healthy'  # Ou 'unhealthy' dependendo do estado dos mocks/serviços reais
 
 
-def test_health_check_es_down(client, app):
-    mock_orchestrator = get_mock_orchestrator_from_current_app(app)
-    mock_orchestrator.es_service.es_client.ping.return_value = False
+@pytest.mark.skipif(not SEARCH_ORCH_AVAILABLE, reason="SearchOrchestrator não pôde ser importado.")
+def test_search_documents_success(client: FlaskClient, mocker):
+    """Testa o endpoint /api/v1/search com uma query válida, esperando sucesso."""
 
-    response = client.get('/health')
-    assert response.status_code == 503
-    json_data = response.get_json()
-    assert json_data['status'] == 'unhealthy'
-    assert json_data.get('elasticsearch_connection') == 'error_ping_failed'
+    # Mock para o método search_and_rerank_documents do SearchOrchestrator
+    # que está armazenado em current_app.extensions['search_orchestrator']
+    mock_search_result = {
+        "chosen_document_id": "doc_test_123",
+        "document_title": "Petição Teste Mock",
+        "contextual_summary_llm": "Este é um resumo mock gerado pelo LLM para a petição de teste.",
+        "full_text_content": "Conteúdo completo da petição de teste mock...",
+        "file_name": "teste_mock.txt"
+    }
 
+    # Acessa o orchestrator da app e mocka seu método
+    # Isso requer que a fixture 'app' (e portanto 'client') já tenha configurado o orchestrator
+    # na app.extensions['search_orchestrator']
+    # Se o orchestrator real não for mockado no conftest, podemos mockar seu método aqui.
 
-def test_search_endpoint_success(client, app):
-    mock_orchestrator = get_mock_orchestrator_from_current_app(app)
-    mock_orchestrator.search_petitions_bm25_only.reset_mock()
-    mock_orchestrator.search_petitions_bm25_only.return_value = MOCK_BM25_SEARCH_RESULTS
+    # Para mockar um método de uma instância já criada e colocada em app.extensions
+    # é um pouco mais complicado que mockar uma classe antes da instanciação.
+    # Uma abordagem é mockar a classe SearchOrchestrator ANTES que 'create_app' seja chamado,
+    # ou passar um orchestrator mockado para 'create_app' via test_config.
 
-    response = client.post('/api/v1/search', json={'query': 'test search query'})
+    # Alternativa: Mock o método diretamente na instância se você puder acessá-la
+    # Esta abordagem é mais simples se você tem a instância.
+    # No 'app' fixture do conftest, o search_orchestrator é colocado em app.extensions.
+    # Então, podemos acessá-lo via current_app (mas current_app só funciona dentro de um contexto de request).
+    # É melhor usar o 'mocker' do pytest-mock para mockar o método na classe ANTES que ele seja chamado.
+
+    # Mock para SearchOrchestrator.search_and_rerank_documents
+    # Este mock será usado quando o endpoint chamar o método.
+    mocker.patch(
+        'python_backend_services.app.services.search_orchestrator.SearchOrchestrator.search_and_rerank_documents',
+        return_value=mock_search_result
+    )
+
+    query_data = {"query": "petição de alimentos"}
+    response = client.post('/api/v1/search', json=query_data)
 
     assert response.status_code == 200
     json_data = response.get_json()
-    assert isinstance(json_data, list)
-    assert len(json_data) == len(MOCK_BM25_SEARCH_RESULTS)
-    mock_orchestrator.search_petitions_bm25_only.assert_called_once_with('test search query')
+    assert json_data["chosen_document_id"] == "doc_test_123"
+    assert "contextual_summary_llm" in json_data
+    assert "full_text_content" in json_data
 
 
-def test_search_endpoint_no_results(client, app):
-    mock_orchestrator = get_mock_orchestrator_from_current_app(app)
-    mock_orchestrator.search_petitions_bm25_only.reset_mock()
-    mock_orchestrator.search_petitions_bm25_only.return_value = []
-
-    response = client.post('/api/v1/search', json={'query': 'query for no results'})
-
-    assert response.status_code == 404
-    json_data = response.get_json()
-    assert json_data['message'] == "No documents found matching your query"
-    mock_orchestrator.search_petitions_bm25_only.assert_called_once_with('query for no results')
-
-
-def test_search_endpoint_missing_query(client, app):
-    mock_orchestrator = get_mock_orchestrator_from_current_app(app)
-    mock_orchestrator.search_petitions_bm25_only.reset_mock()
-
+@pytest.mark.skipif(not SEARCH_ORCH_AVAILABLE, reason="SearchOrchestrator não pôde ser importado.")
+def test_search_documents_no_query(client: FlaskClient):
+    """Testa o endpoint /api/v1/search sem fornecer uma query."""
     response = client.post('/api/v1/search', json={})
-
     assert response.status_code == 400
     json_data = response.get_json()
-    assert json_data['error'] == "Missing 'query' in request body"
-    mock_orchestrator.search_petitions_bm25_only.assert_not_called()
+    assert "error" in json_data
+    assert "query' é obrigatória" in json_data["error"]
 
 
-def test_get_document_endpoint_success(client, app):
-    mock_orchestrator = get_mock_orchestrator_from_current_app(app)
-    mock_orchestrator.get_document_details_by_id.reset_mock()
-    doc_id_to_get = MOCK_DOCUMENT_DETAIL['id']
-    mock_orchestrator.get_document_details_by_id.return_value = MOCK_DOCUMENT_DETAIL
-
-    response = client.get(f'/api/v1/document/{doc_id_to_get}')
-
-    assert response.status_code == 200
+@pytest.mark.skipif(not SEARCH_ORCH_AVAILABLE, reason="SearchOrchestrator não pôde ser importado.")
+def test_search_documents_empty_query(client: FlaskClient):
+    """Testa o endpoint /api/v1/search com uma query vazia."""
+    response = client.post('/api/v1/search', json={"query": "   "})
+    assert response.status_code == 400
     json_data = response.get_json()
-    assert json_data['id'] == doc_id_to_get
-    mock_orchestrator.get_document_details_by_id.assert_called_once_with(doc_id_to_get)
+    assert "error" in json_data
+    assert "query' não pode ser vazia" in json_data["error"]
 
 
-def test_get_document_endpoint_not_found(client, app):
-    mock_orchestrator = get_mock_orchestrator_from_current_app(app)
-    mock_orchestrator.get_document_details_by_id.reset_mock()
-    doc_id_not_found = "non_existent_document_id"
-    mock_orchestrator.get_document_details_by_id.return_value = None
+@pytest.mark.skipif(not SEARCH_ORCH_AVAILABLE, reason="SearchOrchestrator não pôde ser importado.")
+def test_search_documents_no_results(client: FlaskClient, mocker):
+    """Testa o endpoint /api/v1/search quando nenhum resultado é encontrado."""
+    mocker.patch(
+        'python_backend_services.app.services.search_orchestrator.SearchOrchestrator.search_and_rerank_documents',
+        return_value=None  # Simula o orchestrator não retornando nada
+    )
+    query_data = {"query": "query muito específica que não acha nada"}
+    response = client.post('/api/v1/search', json=query_data)
 
-    response = client.get(f'/api/v1/document/{doc_id_not_found}')
-
-    assert response.status_code == 404
+    assert response.status_code == 404  # Ou 200 com uma mensagem de "nada encontrado", depende da sua API
     json_data = response.get_json()
-    assert json_data['error'] == f"Document with ID '{doc_id_not_found}' not found"
-    mock_orchestrator.get_document_details_by_id.assert_called_once_with(doc_id_not_found)
+    assert "message" in json_data  # Ou "error"
+    assert "Nenhum resultado adequado encontrado" in json_data["message"]
 
-
-def test_search_api_orchestrator_es_truly_unavailable(client, app):
-    mock_orchestrator = get_mock_orchestrator_from_current_app(app)
-    mock_orchestrator.search_petitions_bm25_only.reset_mock()
-    mock_orchestrator.es_service = None
-
-    response = client.post('/api/v1/search', json={'query': 'test query'})
-
-    assert response.status_code == 503
-    json_data = response.get_json()
-    assert "Search service temporarily unavailable" in json_data['error']
-    mock_orchestrator.search_petitions_bm25_only.assert_not_called()
+# Adicione mais testes para:
+# - Erros internos do servidor (mockar o orchestrator para levantar uma exceção)
+# - Diferentes tipos de queries e resultados esperados

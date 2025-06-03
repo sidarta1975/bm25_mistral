@@ -12,29 +12,38 @@ class Settings:
     SHARED_DATA_DIR: str = os.path.join(PROJECT_ROOT_DIR, 'shared_data')
     SOURCE_DOCS_DIR: str = os.path.join(PROJECT_ROOT_DIR, 'source_documents')
 
-    # --- Data Paths ---
+    # --- Google Cloud Service Account ---
+    # Certifique-se de que o arquivo JSON esteja na pasta 'shared_data' ou ajuste o caminho.
+    GCP_SERVICE_ACCOUNT_KEY_FILENAME: str = "txtparagdoc-b55767d3b447.json"  # Nome do seu arquivo JSON
+    GCP_SERVICE_ACCOUNT_KEY_PATH: str = os.path.join(SHARED_DATA_DIR, GCP_SERVICE_ACCOUNT_KEY_FILENAME)
+
+    # --- Google Sheets Configuration ---
+    # ID da planilha que substitui source_metadata.tsv
+    SOURCE_METADATA_GSHEET_ID: str = "1gJgYXiQF49PfFkjY3o76kQ_qaPkDZXmWJb3VU_WCnPs"
+    # Nome da aba na planilha de metadados (ajuste se for diferente)
+    SOURCE_METADATA_GSHEET_TAB_NAME: str = "Página1"
+
+    # ID da planilha que substitui global_glossary.tsv
+    GLOBAL_GLOSSARY_GSHEET_ID: str = "1q3bQkkfdcIkSMQLSc0SG5-A5Xgj8sExfBhHga-SHx9E"
+    # Nome da aba na planilha do glossário (ajuste se for diferente)
+    GLOBAL_GLOSSARY_GSHEET_TAB_NAME: str = "Sheet1"
+
+    # --- Data Paths (Manter SOURCE_DOCS_BASE_DIR se os arquivos .txt ainda são locais) ---
     SOURCE_DOCS_BASE_DIR: str = os.getenv(
         "SOURCE_DOCS_BASE_DIR",
-        os.path.join(SOURCE_DOCS_DIR, 'petitions') # Mantém apontando para a pasta petitions
+        os.path.join(SOURCE_DOCS_DIR, 'petitions')
     )
-    # REVERTIDO PARA USAR O ARQUIVO DE METADADOS PRINCIPAL
-    METADATA_TSV_PATH: str = os.getenv(
-        "METADATA_TSV_PATH",
-        os.path.join(SHARED_DATA_DIR, 'source_metadata.tsv')
-    )
-    GLOSSARY_FILE_PATH: str = os.getenv(
-        "GLOSSARY_FILE_PATH",
-        os.path.join(SHARED_DATA_DIR, 'global_glossary.tsv')
-    )
+
+    # SQLITE_DB_PATH ainda é relevante para o metadata_enricher
     SQLITE_DB_PATH: str = os.getenv(
         "SQLITE_DB_PATH",
         os.path.join(SHARED_DATA_DIR, 'enriched_documents.sqlite')
     )
 
-    # --- Elasticsearch Configuration ---
+    # --- Elasticsearch Configuration (Manter como estava ou conforme sua necessidade de teste) ---
     ELASTICSEARCH_HOSTS: List[str] = [os.getenv("ELASTICSEARCH_HOST", "http://localhost:9200")]
-    # REVERTIDO PARA USAR O NOME DO ÍNDICE PRINCIPAL
-    ELASTICSEARCH_INDEX_NAME: str = os.getenv("ELASTICSEARCH_INDEX_NAME", "legal_petitions_v2") # ou v1, ou o seu nome de índice principal
+    # Usando o índice de teste que funcionou anteriormente ou o seu principal
+    ELASTICSEARCH_INDEX_NAME: str = os.getenv("ELASTICSEARCH_INDEX_NAME_TEST", "pytest_reintegracao_index")
     ELASTICSEARCH_USER: Optional[str] = os.getenv("ELASTICSEARCH_USER")
     ELASTICSEARCH_PASSWORD: Optional[str] = os.getenv("ELASTICSEARCH_PASSWORD")
     ELASTICSEARCH_REQUEST_TIMEOUT: int = int(os.getenv("ELASTICSEARCH_REQUEST_TIMEOUT", "30"))
@@ -49,13 +58,13 @@ class Settings:
     EMBEDDING_DIMENSIONS: int = int(os.getenv("EMBEDDING_DIMENSIONS", "4096"))
 
     # --- Logging ---
-    LOG_LEVEL: str = os.getenv("LOG_LEVEL", "INFO").upper() # Pode voltar para INFO ou manter DEBUG se preferir
+    LOG_LEVEL: str = os.getenv("LOG_LEVEL", "DEBUG").upper() # Manter DEBUG para facilitar o diagnóstico
 
     # --- Search Settings ---
-    CANDIDATES_FOR_LLM_RERANK: int = int(os.getenv("CANDIDATES_FOR_LLM_RERANK", "5"))
+    CANDIDATES_FOR_LLM_RERANK: int = int(os.getenv("CANDIDATES_FOR_LLM_RERANK", "3"))
 
     # --- Data Ingestion Settings ---
-    BATCH_SIZE_LLM_ENRICHMENT: int = int(os.getenv("BATCH_SIZE_LLM_ENRICHMENT", "5")) # Pode voltar para um valor maior
+    BATCH_SIZE_LLM_ENRICHMENT: int = int(os.getenv("BATCH_SIZE_LLM_ENRICHMENT_TEST", "1"))
 
     TAG_KEYWORDS_MAP: Dict[str, List[str]] = {
         "alimentos": ["direito de família", "pensão alimentícia", "fixação de alimentos"],
